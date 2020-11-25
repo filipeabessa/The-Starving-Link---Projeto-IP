@@ -1,9 +1,9 @@
 import pygame
 
 class HungerSystem:
-    '''Classe para gerenciar a barra de fome do player'''
+    '''Classe para gerenciar a fome do player'''
 
-    HUNGER_DECAY_EVENT = pygame.USEREVENT
+    HUNGER_DECAY_EVENT = pygame.USEREVENT # Evento chamado a cada segundo para reduzir a fome
 
     def __init__(self, curr_hungry = 100 , starve_time = 40):
         '''Construtor da classe, recebe o valor atual da fome e o tempo para o player morrer de fome
@@ -40,6 +40,6 @@ class HungerSystem:
         event_types = [event.type for event in events] # Todos os tipos de eventos chamados no frame
 
         # Se o evento da fome for chamado, decaia na taxa especificada em _hungry_decay
-        if HungerSystem.HUNGER_DECAY_EVENT in event_types: 
+        if HungerSystem.HUNGER_DECAY_EVENT in event_types:
             self.decay(self._hungry_decay)
-            print(f"curr hungry: {self.curr_hungry}")
+            #print(f"curr hungry: {self.curr_hungry}")
