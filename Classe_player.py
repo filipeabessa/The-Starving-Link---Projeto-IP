@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         # Cria um Rect com as dimensões do bloco
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH/2
-        self.rect.bottom = HEIGHT-10
+        self.rect.bottom = HEIGHT/2
 
         # Velocidade no eixo X
         self.speedx = 0
