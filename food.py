@@ -1,14 +1,21 @@
-class Food():
+# Food dictionary with health points for the constructor
+# TODO: Edit food list with final values
+food_list = {
+    'apple': {'points': 5, },
+    'cheese': {'points': 10, },
+    'egg': {'points': 20, },
+    'chicken': {'points': 40, },
+}
 
 
+# Food class
+class Food:
+
+    # Constructor
+    # TODO: Add sprites to food objects
     def __init__(self, name, x_pos, y_pos):
-        food_list = {
-            'apple': {'points': 5,},
-            'cheese': {'points': 10,},
-            'egg': {'points': 20,},
-            'chicken': {'points': 40,},
-        }
-        
+        global food_list
+
         if name not in food_list.keys():
             name = 'apple'
         
@@ -26,41 +33,36 @@ class Food():
             self._y_pos = y_pos
         else:
             self._y_pos = 0
-    
 
+    # Getters
     @property
     def name(self):
         return self._name
     
-
     @property
     def points(self):
         return self._points
 
-
     @property
     def caught(self):
         return self._caught
-    
 
     @property
     def x_pos(self):
         return self._x_pos
-    
 
     @property
     def y_pos(self):
         return self._y_pos
-    
 
     def get_coords(self):
         return self.x_pos, self.y_pos
 
-
+    # Setters
     def grab(self):
         self._caught = True
 
-    
+    # Function for testing
     def to_string(self):
         result = 'Food name: ' + self.name + '\n'
         result += 'Health points: ' + str(self.points) + '\n'
@@ -71,4 +73,3 @@ class Food():
             result += 'Position: (' + str(self.x_pos) + ', ' + str(self.y_pos) + ')\n'
 
         return result
-
