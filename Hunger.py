@@ -11,8 +11,8 @@ class Hunger:
     BAR_HEIGHT = 200
 
     def __init__(self, screen, curr_hungry = 100 , starve_time = 40):
-        '''Construtor da classe, recebe o valor atual da fome e o tempo para o player morrer de fome
-        com a barra cheia em segundos'''
+        '''Construtor da classe, recebe como parâmetros a tela do jogo o valor atual da fome, o
+        tempo para  o player morrer de fome com a barra cheia em segundos'''
         self._max_hungry = 100 # O limite do valor da fome é 100 para facilitar os cálculos
         self._curr_hungry = curr_hungry # Valor da fome atual
         self._hungry_decay = self._max_hungry/starve_time # Quanto de fome decai a cada segundo
@@ -57,7 +57,6 @@ class Hunger:
     def update(self,delta_time):
         '''Realiza o decaimento por segundo da fome. Necessita receber o tempo passado desde o
         último frame (o valor que retorna de Clock.tick())'''
-        
-        # Se o evento da fome for chamado, decaia na taxa especificada em _hungry_decay
+
         self.decay((delta_time * self._hungry_decay)/1000) # Faz o decaimento ser fixo por segundo
         self.show_hunger_bar() # Plota a barra na tela
