@@ -1,10 +1,8 @@
 import pygame
 
 class Hunger:
-    '''Classe para gerenciar a fome do player. Para usar-la é necessário guardar um objeto dessa
-    e chamar a função \'update\' no loop do jogo'''
-
-    HUNGER_DECAY_EVENT = pygame.USEREVENT # Evento chamado a cada segundo para reduzir a fome
+    '''Classe para gerenciar a fome do player. Para usar-la é necessário criar e guarda um objeto
+    da classe quando o jogo começar e chamar a função \'update\' no loop principal do jogo'''
 
     #Variáveis para que a barra que será mostrada na UI
     BAR_POS_X = 770
@@ -12,13 +10,13 @@ class Hunger:
     BAR_WIDDTH = 20
     BAR_HEIGHT = 200
 
-    def __init__(self, curr_hungry = 100 , starve_time = 40):
+    def __init__(self, screen, curr_hungry = 100 , starve_time = 40):
         '''Construtor da classe, recebe o valor atual da fome e o tempo para o player morrer de fome
         com a barra cheia em segundos'''
         self._max_hungry = 100 # O limite do valor da fome é 100 para facilitar os cálculos
         self._curr_hungry = curr_hungry # Valor da fome atual
         self._hungry_decay = self._max_hungry/starve_time # Quanto de fome decai a cada segundo
-        pygame.time.set_timer(Hunger.HUNGER_DECAY_EVENT, 1000)
+        self.screen = screen # A tela do jogo
 
     @property
     def curr_hungry(self): # Getter do curr_hungry
@@ -41,12 +39,12 @@ class Hunger:
             self._curr_hungry = 0
             #TODO: call player Game Over
 
-    def show_hunger_bar(self, screen):
+    def show_hunger_bar(self):
         '''Plota a barra de fome na tela com a fome atual'''
         modifier = self.BAR_HEIGHT - self.BAR_HEIGHT * self.curr_hungry/100 #
-        pygame.draw.rect(screen,(75,50,50),self._get_bar_rect()) # background
-        pygame.draw.rect(screen,(0,250,0),self._get_bar_rect(modifier)) # barra
-        pygame.draw.rect(screen,(150,75,0),self._get_bar_rect(),1) # bordas
+        pygame.draw.rect(self.screen,(75,50,50),self._get_bar_rect()) # background
+        pygame.draw.rect(self.screen,(0,250,0),self._get_bar_rect(modifier)) # barra
+        pygame.draw.rect(self.screen,(150,75,0),self._get_bar_rect(),1) # bordas
         pygame.display.flip() # Mostra as barras na tela
 
     @classmethod # Método estático
@@ -56,14 +54,10 @@ class Hunger:
         return pygame.Rect(cls.BAR_POS_X, cls.BAR_POS_Y + y_modifier,
             cls.BAR_WIDDTH, cls.BAR_HEIGHT - y_modifier)
 
-    def update(self, events, screen):
-        '''Realiza o decaimento por segundo da fome. Necessita receber os eventos
-        do PyGame como parâmetro'''
-        event_types = [event.type for event in events] # Todos os tipos de eventos chamados no frame
-
-        # Se o evento da fome for chamado, decaia na taxa especificada em _hungry_decay
-        if Hunger.HUNGER_DECAY_EVENT in event_types:
-            self.decay(self._hungry_decay)
-            #print(f"curr hungry: {self.curr_hungry}")
+    def update(self,delta_time):
+        '''Realiza o decaimento por segundo da fome. Necessita receber o tempo passado desde o
+        último frame (o valor que retorna de Clock.tick())'''
         
-        self.show_hunger_bar(screen) # Plota a barra na tela
+        # Se o evento da fome for chamado, decaia na taxa especificada em _hungry_decay
+        self.decay((delta_time * self._hungry_decay)/1000) # Faz o decaimento ser fixo por segundo
+        self.show_hunger_bar() # Plota a barra na tela
