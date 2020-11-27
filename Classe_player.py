@@ -1,5 +1,4 @@
 import pygame
-pygame.init()
 
 # Cria a classe do player
 class Player(pygame.sprite.Sprite):
