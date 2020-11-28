@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 import pygame
 
 # Food dictionary with health points for the constructor
@@ -93,14 +93,10 @@ class Food:
             valid_pos = test_rect.collidelist(colliders) == -1 #Se não bater em nada, a pos é válida
 #           print(f"valid_pos = {valid_pos}| pos = {sp_pos}| test = {test_rect.collidelist(colliders)}")
 
-        return Food(cls.get_random_food(), sp_pos[0], sp_pos[1], screen) # Retorna a comida spawnada
-
-    @classmethod
-    def get_random_food(cls):
-        '''Retorna uma string com o nome de uma comida no dicionário das comidas'''
         f_list = [*food_list] # Lista com as chaves do dicionário(nome das comidas)
-        index = randint(0,len(f_list)-1) # Pega um index aleatório da lista acima
-        return f_list[index] # Retorna o nome de uma comida com base no index aleatório
+        food = choice(f_list) # Pega uma comida aleatória da lista acima
+
+        return Food(food, sp_pos[0], sp_pos[1], screen) # Retorna a comida spawnada
 
     def update(self):
         '''Mantém o sprite da comida  na tela'''
