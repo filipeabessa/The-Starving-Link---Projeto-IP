@@ -27,7 +27,13 @@ class Enemy(Sprite):
 
     @property
     def rect(self):
+        '''O retângulo que representa o inimigo'''
         return self._rect
+
+    @property
+    def pos(self):
+        '''Tupla com a posição do inimigo'''
+        return self.rect.x, self.rect.y
 
     def change_dir(self, x_dir:int = 0, y_dir:int = 0):
         '''Muda a direção do imigo normalizando o vetor de sua direção para evitar que
@@ -74,7 +80,7 @@ class Enemy(Sprite):
                 # TODO: dropa um buff
             else:
                 print("Comida")
-                #TODO: dropa uma comida
+                #Food("",self.pos[0], self.pos[1], self._screen, True)
 
 
     def update(self, player_pos: tuple, obstacles:list):
