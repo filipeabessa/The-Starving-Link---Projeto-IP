@@ -15,13 +15,18 @@ food_list = {
 class Food:
 
     # Constructor
-    def __init__(self, name, x_pos, y_pos, screen):
+    def __init__(self, name, x_pos, y_pos, screen, random_food = False):
         global food_list
 
         if name not in food_list.keys():
             name = 'apple'
         
-        self._name = name
+        if random_food: # Se random_food == True, escolha uma comida aleatória
+            f_list = [*food_list] # Lista com as chaves do dicionário(nome das comidas)
+            self._name = choice(f_list)# Pega uma comida aleatória da lista acima
+        else:
+            self._name = name
+
         self._points = food_list[name]['points']
         self._caught = False
 
@@ -101,5 +106,6 @@ class Food:
     def update(self):
         '''Mantém o sprite da comida  na tela'''
         # Por enquanto, estou usando quadrados como Placeholder
-        self.sprite.fill(food_list[self.name]['color']) # Pinta o quadrado da cor da comida
-        self.screen.blit(self.sprite,self.get_coords()) # Coloca o sprite na tela
+        if hasattr(self, "name"):
+            self.sprite.fill(food_list[self.name]['color']) # Pinta o quadrado da cor da comida
+            self.screen.blit(self.sprite,self.get_coords()) # Coloca o sprite na tela
