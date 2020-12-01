@@ -8,27 +8,26 @@ class Menu():
 
         # Display do menu iniciado
         self.run_display = True
-        self.startx, self.starty = constants.DISPLAY_WIDTH / 2, constants.DISPLAY_HEIGHT / 2
 
-    def blit_screen(self):
-        self.game.window.blit(self.game.game_display, (0, 0))
-        pygame.display.update()
-        self.game.reset_game()
+        # Posição do texto "Start Game"
+        self.startx = constants.DISPLAY_WIDTH / 2
+        self.starty = constants.DISPLAY_HEIGHT / 2
 
+    # Exibe o menu na tela
     def display_menu(self):
         self.run_display = True
         while self.run_display:
             self.game.check_events()
-            self.check_input()
+            self.check_if_game_started()
             self.game.game_display.fill(constants.BLACK)
             self.game.draw_text('Main Menu', 30, constants.DISPLAY_WIDTH / 2, 50)
             self.game.draw_text("Start Game", 25, self.startx, self.starty)
             self.game.draw_text("Press ENTER!", 15, self.startx, self.starty + 50)
-            self.blit_screen()
+            self.game.window.blit(self.game.game_display, (0, 0))
+            pygame.display.update()
 
-    def check_input(self):
+    # Checa se o enter foi apertado no menu, e se sim, self.playing é setado pra True e self.menu.run_display é setado para false, e assim o menu some da tela e o loop do jogo é iniciado    
+    def check_if_game_started(self):
         if self.game.start_key:
-            # Jogo é iniciado
-            self.game.playing = True
-            # Menu para de aparecer
             self.run_display = False
+            self.game.playing = True
