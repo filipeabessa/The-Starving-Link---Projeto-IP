@@ -1,6 +1,7 @@
 import pygame
 from hunger import Hunger
-from Classe_player import Player
+from Classe_player import Player, all_sprites
+from bullets import Bullets
 from score import Score
 from food import Food
 
@@ -14,8 +15,6 @@ clock = pygame.time.Clock()
 BLACK = (0, 0, 0)
 
 player = Player(BLACK, screen_width, screen_height)
-all_sprites = pygame.sprite.Group()
-all_sprites.add(player)
 score = Score(gameDisplay, 0, screen_width - 40, 20)
 hunger = Hunger(gameDisplay)
 
@@ -28,12 +27,15 @@ dead = False
 
 while not dead:
     dt = clock.tick(60)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             dead = True
-
+        
+    
+    player.shoot()
     gameDisplay.blit(indoor_hirule, (0, 0))
+    gameDisplay.blit(player.image, player.coordenadas())
+    player.update(dt)
     all_sprites.update()
     all_sprites.draw(gameDisplay)
     score.update(0)
