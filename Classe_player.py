@@ -29,10 +29,6 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         # Mover o rect de acordo com a velocidade
         self.rect.x += self.speedx
-    
-    def hide(self):
-        self.hidden = True
-        self.hide_timer = pygame.time.get_ticks()
 
     def draw_lives(self, screen, x, y, lives, img):
         for i in range(lives):
