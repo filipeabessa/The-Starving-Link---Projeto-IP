@@ -14,7 +14,9 @@ clock = pygame.time.Clock()
 BLACK = (0, 0, 0)
 
 player = Player(BLACK, screen_width, screen_height)
-score = Score(gameDisplay, 0, screen_width - 20, 20)
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player)
+score = Score(gameDisplay, 0, screen_width - 40, 20)
 hunger = Hunger(gameDisplay)
 
 indoor_hirule = pygame.image.load("hirule.png")
@@ -32,10 +34,12 @@ while not dead:
             dead = True
 
     gameDisplay.blit(indoor_hirule, (0, 0))
-    player.update()
+    all_sprites.update()
+    all_sprites.draw(gameDisplay)
     score.update(0)
     hunger.update(dt)
     pygame.display.update()
+    pygame.display.flip()
     
 
 
