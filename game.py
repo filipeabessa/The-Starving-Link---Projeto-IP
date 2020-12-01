@@ -109,12 +109,15 @@ class Game():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                            self.hunger._curr_hungry = 100
+                            self.hunger._curr_hungry = 20
                             self.player.lives = 5
                             self.player.dead = False
                             self.playing = True
                             self.run_game_display = True
                             self.game_over.run_display = False
+
+                            #TODO mandar o player pro centro da tela
+                            #TODO fazer os inimigos sumirem da tela
 
 
 
