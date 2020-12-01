@@ -19,6 +19,23 @@ class Player(pygame.sprite.Sprite):
         # Velocidade no eixo X
         self.speedx = 0
 
+        # Vidas do player
+        self.lives = 5
+        self.hidden = False
+        self.hide_timer = pygame.time.get_ticks()
+        self.lives_img = pygame.image.load("8bitheart.png")
+
     def update(self):
         # Mover o rect de acordo com a velocidade
         self.rect.x += self.speedx
+    
+    def hide(self):
+        self.hidden = True
+        self.hide_timer = pygame.time.get_ticks()
+
+    def draw_lives(self, screen, x, y, lives, img):
+        for i in range(lives):
+            img_rect = img.get_rect()
+            img_rect.x = x
+            img_rect.y = y + 30 * i
+            screen.blit(img, img_rect)

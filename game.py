@@ -61,6 +61,7 @@ class Game():
                     self.player.update()
                     self.score.update(0)
                     self.hunger.update(dt)
+                    self.player.draw_lives(self.window, constants.HUNGER_LIVES_X, constants.LIVES_Y, self.player.lives, self.player.lives_img)
                     pygame.display.update()
 
     def check_events(self):
