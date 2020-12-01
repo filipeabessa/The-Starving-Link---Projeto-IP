@@ -10,9 +10,12 @@ class Game():
         pygame.init()
         # Atributo booleano que recebe a informação se o jogo está rodando
         self.running = True
+
         # Atributo booleano que recebe a informação se o jogo está sendo jogado
         self.playing = False
 
+        # Inicialmente o jogador não está morto
+        self.dead = False
         
         # Tecla de iniciar o jogo ainda não foi apertada
         self.start_key = False
@@ -34,6 +37,7 @@ class Game():
         # Imagem do cenário do jogo
         self.scenario_img = pygame.image.load("hirule.png")
 
+        # Cria instâncias das classes
         self.player = Player(constants.BLACK, constants.DISPLAY_WIDTH, constants.DISPLAY_HEIGHT)
         self.score = Score(self.window, 0, constants.DISPLAY_WIDTH - 20, 20)
         self.hunger = Hunger(self.window)
@@ -42,39 +46,55 @@ class Game():
     # Método do loop do jogo. (Esse código antes ficava no projeto.py)
     def game_loop(self):
         while self.running:
-            self.check_events()
-            self.menu.check_input()
+
+            # Checa se o jogo foi fechado ou se o enter foi apertado
+            self.check_events() 
+
+            # Checa se o enter foi apertado no menu, e se sim, self.playing é setado pra True e self.menu.run_display é setado para false,
+            # e assim o menu some da tela e o loop do jogo é iniciado
+            self.menu.check_if_game_started()
 
             if self.playing:
-                while not self.player.dead:
+                while not self.dead:
                     dt = self.clock.tick(60)
 
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
-                            self.player.dead = True
-                            self.running, self.playing = False, False
+                            self.dead = True
+                            self.running = False
+                            self.playing = False
                             self.menu.run_display = False
 
+                    # Cenário mostrado na tela
                     self.window.blit(self.scenario_img, (0, 0))
+
+                    # Player mostrado na tela
                     self.player.update()
+
+                    # Score mostrado na tela
                     self.score.update(0)
+
+                    # Barra de fome mostrado na tela
                     self.hunger.update(dt)
+
+                    # Mostrar vidas na tela
                     self.player.draw_lives(self.window, constants.HUNGER_LIVES_X, constants.LIVES_Y, self.player.lives, self.player.lives_img)
+
                     pygame.display.update()
 
+    # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running, self.playing = False, False
+                self.running = False
+                self.playing = False
                 self.menu.run_display = False
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.start_key = True
 
-    def reset_game(self):
-        self.start_key= False
-
+    # Escreve na tela
     def draw_text(self, text, size, x, y):
         font = pygame.font.Font(self.font_name, size)
         text_surface = font.render(text, True, constants.WHITE)

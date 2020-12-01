@@ -23,6 +23,10 @@ class Player(pygame.sprite.Sprite):
         self.lives = 5
         self.lives_limit = 5
         self.lives_img = pygame.image.load("8bitheart.png")
+
+        # Se o player perder uma vida, vai ser mudado para True, para os enemies não conseguirem atacar por algum tempo
+        self.invincible = False
+        self.invincible_timer = pygame.time.get_ticks()
         
         # Player inicialmente não está morto
         self.dead = False
@@ -31,6 +35,10 @@ class Player(pygame.sprite.Sprite):
         # Mover o rect de acordo com a velocidade
         self.rect.x += self.speedx
 
+        # Se o player estiver invencível há um segundo, o player deixar de ser invencivel
+        if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
+            self.invincible = False
+
     def draw_lives(self, screen, x, y, lives, img):
         # Desenha vidas na tela
         for i in range(lives):
@@ -38,14 +46,23 @@ class Player(pygame.sprite.Sprite):
             img_rect.x = x
             img_rect.y = y + 30 * i
             screen.blit(img, img_rect)
-    
+
+    # Remove a vida em 1 quando o método é chamado. Se a quantidade de vidas vai de 1 para 0, o player morre
     def lose_life(self):
-        # Remove a vida em 1 quando o método é chamado. Se a quantidade de vidas vai de 1 para 0, o player morre
         self.lives = self.lives - 1
+        self.make_invicible()
+
         if self.lives == 0:
             self.dead = True
-    
+
+    # Uma vida é adicionada quando o método é chamado, se o player tem menos que o limite de vidas
     def gain_life(self):
-        # Uma vida é adicionada quando o método é chamado, se o player tem menos que o limite de vidas
         if self.lives < self.lives_limit:
             self.lives = self.lives + 1
+
+    # Faz player ficar invencível
+    def make_invincible(self):
+
+        self.invincible = True
+        self.invincible_timer = pygame.time.get_ticks()
+    
