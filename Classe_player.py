@@ -3,10 +3,10 @@ import pygame
 # Cria a classe do player
 class Player(pygame.sprite.Sprite):
     # Construtor
-    def __init__(self, color, width, height, hunger, game):
-
+    def __init__(self, color, width, height, hunger, game, game_over):
+        
+        self.game_over = game_over
         self.game = game
-
         self.hunger = hunger
 
         # Chama o construtor do Sprite
@@ -68,15 +68,19 @@ class Player(pygame.sprite.Sprite):
         self.invincible = True
         self.invincible_timer = pygame.time.get_ticks()
     
+    # Se a fome chegar em 0, o player morre
     def check_hunger(self):
         if self.hunger._curr_hungry == 0:
             self.player_died()
     
+    # Se a quantidade de vidas chegar em 0, o player morre
     def check_lives(self):
         if self.lives == 0:
             self.player_died()
 
+    # Função faz o jogador morrer e muda valores dos booleanos para que a tela de game over apareça
     def player_died(self):
-        self.game.dead = True
+        self.dead = True
         self.game.playing = False
         self.game.run_game_display = False
+        self.game_over.run_display = True

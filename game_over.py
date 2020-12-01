@@ -12,8 +12,15 @@ class Game_over():
 
     # Exibe a tela de Game Over
     def display_game_over(self):
-        self.game.game_display.fill(constants.BLACK)
-        self.game.draw_text("Game Over", 50, constants.DISPLAY_WIDTH/2, constants.DISPLAY_HEIGHT/2)
-        self.game.window.blit(self.game.game_display, (0, 0))
-        pygame.display.update()
+        if self.run_display:
+            self.game.game_display.fill(constants.BLACK)
+            self.game.draw_text("Game Over", 50, constants.DISPLAY_WIDTH/2, constants.DISPLAY_HEIGHT/2)
+            self.game.draw_text("press SPACE to retry", 15, constants.DISPLAY_WIDTH/2, (constants.DISPLAY_HEIGHT/2) + 50)
+            self.game.window.blit(self.game.game_display, (0, 0))
+            pygame.display.update()
+    
+    def game_over(self):
+        self.display_game_over()
+        self.game.retry()
+    
 
