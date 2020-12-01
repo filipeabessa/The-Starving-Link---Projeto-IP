@@ -3,7 +3,12 @@ import pygame
 # Cria a classe do player
 class Player(pygame.sprite.Sprite):
     # Construtor
-    def __init__(self, color, width, height):
+    def __init__(self, color, width, height, hunger, game):
+
+        self.game = game
+
+        self.hunger = hunger
+
         # Chama o construtor do Sprite
         pygame.sprite.Sprite.__init__(self)
 
@@ -52,9 +57,6 @@ class Player(pygame.sprite.Sprite):
         self.lives = self.lives - 1
         self.make_invicible()
 
-        if self.lives == 0:
-            self.dead = True
-
     # Uma vida é adicionada quando o método é chamado, se o player tem menos que o limite de vidas
     def gain_life(self):
         if self.lives < self.lives_limit:
@@ -66,3 +68,15 @@ class Player(pygame.sprite.Sprite):
         self.invincible = True
         self.invincible_timer = pygame.time.get_ticks()
     
+    def check_hunger(self):
+        if self.hunger._curr_hungry == 0:
+            self.player_died()
+    
+    def check_lives(self):
+        if self.lives == 0:
+            self.player_died()
+
+    def player_died(self):
+        self.game.dead = True
+        self.game.playing = False
+        self.game.run_game_display = False

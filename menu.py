@@ -15,7 +15,6 @@ class Menu():
 
     # Exibe o menu na tela
     def display_menu(self):
-        self.run_display = True
         while self.run_display:
             self.game.check_events()
             self.check_if_game_started()
