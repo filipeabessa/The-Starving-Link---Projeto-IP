@@ -24,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
         self.lives_img = pygame.image.load("8bitheart.png")
+        self.dead = False
 
     def update(self):
         # Mover o rect de acordo com a velocidade
@@ -39,3 +40,12 @@ class Player(pygame.sprite.Sprite):
             img_rect.x = x
             img_rect.y = y + 30 * i
             screen.blit(img, img_rect)
+    
+    def lose_life(self):
+        self.lives = self.lives - 1
+        if self.lives == 0:
+            self.dead = True
+    
+    def gain_life(self):
+        if self.lives < 5:
+            self.lives = self.lives - 1

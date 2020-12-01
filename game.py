@@ -13,8 +13,6 @@ class Game():
         # Atributo booleano que recebe a informação se o jogo está sendo jogado
         self.playing = False
 
-        # Inicialmente o jogador não está morto
-        self.dead = False
         
         # Tecla de iniciar o jogo ainda não foi apertada
         self.start_key = False
@@ -48,12 +46,12 @@ class Game():
             self.menu.check_input()
 
             if self.playing:
-                while not self.dead:
+                while not self.player.dead:
                     dt = self.clock.tick(60)
 
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
-                            self.dead = True
+                            self.player.dead = True
                             self.running, self.playing = False, False
                             self.menu.run_display = False
 
