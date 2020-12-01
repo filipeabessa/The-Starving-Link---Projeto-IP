@@ -14,6 +14,9 @@ food_list = {
 # Food class
 class Food:
 
+    SPAWN_DELAY = 20000 # Delay entre os spawns de comida
+    FOOD_SPAWN_EVENT = pygame.USEREVENT # Evento para gerar a comida
+
     # Constructor
     def __init__(self, name, x_pos, y_pos, screen, random_food = False):
         global food_list
@@ -42,13 +45,18 @@ class Food:
             self._y_pos = 0
 
         self.screen = screen
-        self.sprite = pygame.Surface((10,10)) # PLACEHOLDER
+        self.sprite = pygame.Surface((10,10))
+
+    @classmethod
+    def start_spawn(cls):
+        '''Começa a spawnar comida no mapa por meio do evento FOOD_SPAWN_EVENT'''
+        pygame.time.set_timer(cls.FOOD_SPAWN_EVENT, cls.SPAWN_DELAY) # Inicia o evento
 
     # Getters
     @property
     def name(self):
         return self._name
-    
+
     @property
     def points(self):
         return self._points
