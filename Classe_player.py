@@ -21,9 +21,10 @@ class Player(pygame.sprite.Sprite):
 
         # Vidas do player
         self.lives = 5
-        self.hidden = False
-        self.hide_timer = pygame.time.get_ticks()
+        self.lives_limit = 5
         self.lives_img = pygame.image.load("8bitheart.png")
+        
+        # Player inicialmente não está morto
         self.dead = False
 
     def update(self):
@@ -31,6 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += self.speedx
 
     def draw_lives(self, screen, x, y, lives, img):
+        # Desenha vidas na tela
         for i in range(lives):
             img_rect = img.get_rect()
             img_rect.x = x
@@ -38,10 +40,12 @@ class Player(pygame.sprite.Sprite):
             screen.blit(img, img_rect)
     
     def lose_life(self):
+        # Remove a vida em 1 quando o método é chamado. Se a quantidade de vidas vai de 1 para 0, o player morre
         self.lives = self.lives - 1
         if self.lives == 0:
             self.dead = True
     
     def gain_life(self):
-        if self.lives < 5:
-            self.lives = self.lives - 1
+        # Uma vida é adicionada quando o método é chamado, se o player tem menos que o limite de vidas
+        if self.lives < self.lives_limit:
+            self.lives = self.lives + 1
