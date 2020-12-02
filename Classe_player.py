@@ -1,5 +1,7 @@
 import pygame
 from bullets import Bullets
+from os import path
+import constants
 
 all_sprites = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
@@ -7,8 +9,8 @@ bullets = pygame.sprite.Group()
 # Cria a classe do player
 class Player(pygame.sprite.Sprite):
     # Construtor
-    def __init__(self, color, width, height, hunger, game, game_over):
-        
+    def __init__(self, color, hunger, game, game_over):
+
         self.game_over = game_over
         self.game = game
         self.hunger = hunger
@@ -17,13 +19,17 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Cria a imagem de um bloco e adiciona a cor
-        self.image = pygame.Surface((30, 50))
-        self.image.fill(color)
+        img_path = path.join(
+            path.dirname(__file__), "link_front.png"
+        )  # Caminho para o sprite
+        self.image = pygame.image.load(img_path).convert_alpha()  # Sprite sem o fundo
+        # self.image = pygame.Surface((30, 50))
+        # self.image.fill(color)
 
         # Cria um Rect com as dimensões do bloco
         self.rect = self.image.get_rect()
-        self.rect.centerx = width/2
-        self.rect.bottom = height/2
+        self.rect.centerx = constants.DISPLAY_HEIGHT / 2
+        self.rect.bottom = constants.DISPLAY_WIDTH / 2
 
         # Velocidade no eixo X
         self.speedx = 0
@@ -43,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         # Se o player perder uma vida, vai ser mudado para True, para os enemies não conseguirem atacar por algum tempo
         self.invincible = False
         self.invincible_timer = pygame.time.get_ticks()
-        
+
         # Player inicialmente não está morto
         self.dead = False
 
@@ -72,7 +78,7 @@ class Player(pygame.sprite.Sprite):
         # Se o player estiver invencível há um segundo, o player deixar de ser invencivel
         if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
             self.invincible = False
-        
+
         # Blit do player
         self.game.window.blit(self.image, self.coordenadas())
 
@@ -99,12 +105,12 @@ class Player(pygame.sprite.Sprite):
 
         self.invincible = True
         self.invincible_timer = pygame.time.get_ticks()
-    
+
     # Se a fome chegar em 0, o player morre
     def check_hunger(self):
         if self.hunger._curr_hungry == 0:
             self.player_died()
-    
+
     # Se a quantidade de vidas chegar em 0, o player morre
     def check_lives(self):
         if self.lives == 0:
@@ -116,10 +122,11 @@ class Player(pygame.sprite.Sprite):
         self.game.playing = False
         self.game.run_game_display = False
         self.game_over.run_display = True
+
     # Recebe o sprite e retorna uma tupla com as coordenadas dele
     def coordenadas(self):
-        return (self.rect.x, self.rect.y)        
-    
+        return (self.rect.x, self.rect.y)
+
     # Define método para atirar flechas
     def shoot(self):
         if self.timer > 0:
@@ -139,7 +146,7 @@ class Player(pygame.sprite.Sprite):
             direction[0] = 1
             imagem = "Arrow_right.png"
             pos_x = self.rect.right
-            pos_y = self.rect.centery    
+            pos_y = self.rect.centery
         if keystate[pygame.K_LEFT]:
             direction[0] = -1
             imagem = "Arrow_left.png"
@@ -152,7 +159,9 @@ class Player(pygame.sprite.Sprite):
             pos_y = self.rect.bottom
 
         if direction != [0, 0]:
-            bullet = Bullets(pos_x, pos_y, direction[0]*speed, direction[1]*speed, imagem)
+            bullet = Bullets(
+                pos_x, pos_y, direction[0] * speed, direction[1] * speed, imagem
+            )
             all_sprites.add(bullet)
             bullets.add(bullet)
             self.timer = self.delay_shoot

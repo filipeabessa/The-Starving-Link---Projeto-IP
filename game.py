@@ -52,8 +52,6 @@ class Game:
         self.game_over = Game_over(self)
         self.player = Player(
             constants.BLACK,
-            constants.DISPLAY_WIDTH,
-            constants.DISPLAY_HEIGHT,
             self.hunger,
             self,
             self.game_over,
@@ -160,8 +158,8 @@ class Game:
                     self.run_game_display = True
                     self.game_over.run_display = False
 
-                    self.player.rect.centerx = width / 2
-                    self.player.rect.bottom = height / 2
+                    self.player.rect.centerx = constants.DISPLAY_WIDTH / 2
+                    self.player.rect.bottom = constants.DISPLAY_HEIGHT / 2
 
                     # TODO mandar o player pro centro da tela
                     # TODO fazer os inimigos sumirem da tela
