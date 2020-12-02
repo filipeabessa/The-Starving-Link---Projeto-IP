@@ -7,6 +7,8 @@ from food import Food
 from game_over import Game_over
 from bullets import Bullets
 from enemy import Enemy
+from items_count import Items_count
+from os import path
 import constants
 
 
@@ -59,6 +61,23 @@ class Game:
 
         self.enemies = [Enemy(700, 600, 5, self.window)]  # Lista de inimigos na tela
         self.food_list = []  # Lista de comidas na tela
+
+        #Contadores de itens pegos
+        self.breads_caught = 100
+        self.apples_caught = 100
+        self.chickens_caught = 100
+        self.game_score = 0
+
+        #Dicionario com os icones das comidas
+        self.food_images = { 
+            "apple": (pygame.image.load(path.join('', "Apple.png")).convert_alpha()),
+            "bread": (pygame.image.load(path.join('', "Bread.png")).convert_alpha()),
+            "chicken": (pygame.image.load(path.join('', "Chicken.png")).convert_alpha())
+        }
+
+        self.apples_count = Items_count(self.window, 0, 30, constants.DISPLAY_HEIGHT - 100, self.food_images["apple"])
+        self.breads_count = Items_count(self.window, 0, 30, constants.DISPLAY_HEIGHT - 65, self.food_images["bread"])
+        self.chickens_count = Items_count(self.window, 0, 30, constants.DISPLAY_HEIGHT - 30, self.food_images["chicken"])
 
     # Método do loop do jogo. (Esse código antes ficava no projeto.py)
     def game_loop(self):
@@ -133,6 +152,11 @@ class Game:
                 self.player.lives,
                 self.player.lives_img,
             )
+            #Draw Items count
+            self.apples_count.update(self.apples_caught)
+            self.breads_count.update(self.breads_caught)
+            self.chickens_count.update(self.chickens_caught)
+
             all_sprites.update()
             # Atualiza a imagem de todas as comidas
             for food in self.food_list:

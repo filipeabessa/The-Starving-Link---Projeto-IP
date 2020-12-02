@@ -22,7 +22,7 @@ class Items_count:
         # Font format
         font_name = pygame.font.match_font("arial")
         # Font size
-        size = 18
+        size = 20
         font = pygame.font.Font(font_name, size)
 
         text_surface = font.render((self.value_str + " x"), True, (255, 255, 255))
@@ -33,9 +33,9 @@ class Items_count:
         self.surface.blit(text_surface, text_rect)
 
         # Resize image
-        img = pygame.transform.scale(self.image, (18, 20))
+        img = pygame.transform.scale(self.image, (25, 25))
         # Draw the item icon
-        self.surface.blit(img, [self.x + 25, self.y])
+        self.surface.blit(img, [self.x + 28, self.y])
 
     def update(self, value):
         self.value_str = str(value)
