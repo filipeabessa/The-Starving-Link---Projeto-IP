@@ -122,6 +122,7 @@ class Player(pygame.sprite.Sprite):
         self.game.playing = False
         self.game.run_game_display = False
         self.game_over.run_display = True
+        all_sprites.empty()
 
     # Recebe o sprite e retorna uma tupla com as coordenadas dele
     def coordenadas(self):
