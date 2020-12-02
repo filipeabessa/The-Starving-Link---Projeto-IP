@@ -11,7 +11,7 @@ class Hunger:
     BAR_WIDDTH = 20
     BAR_HEIGHT = 200
 
-    def __init__(self, screen, curr_hungry=100, starve_time=20):
+    def __init__(self, screen, curr_hungry=100, starve_time=40):
         """Construtor da classe, recebe como parâmetros a tela do jogo o valor atual da fome, o
         tempo para  o player morrer de fome com a barra cheia em segundos"""
         self._max_hungry = (
