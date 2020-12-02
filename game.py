@@ -1,14 +1,15 @@
 import pygame
 from menu import *
 from hunger import Hunger
-from Classe_player import Player
+from Classe_player import Player, all_sprites
 from score import Score
 from food import Food
 from game_over import Game_over
+from bullets import Bullets
 import constants
 class Game():
     def __init__(self):
-        pygame.init()
+
         # Atributo booleano que recebe a informação se o jogo está rodando
         self.running = True
 
@@ -55,16 +56,19 @@ class Game():
             # e assim o menu some da tela e o loop do jogo é iniciado
             self.menu.check_if_game_started()
         if self.playing:
+            hunger = Hunger(self.window)
             while not self.player.dead:
+                dt = self.clock.tick(60)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.player.dead = True
                         self.running = False
                         self.playing = False
                         self.menu.run_display = False
+                self.player.shoot()
                 self.player.check_hunger()
                 self.player.check_lives()
-                self.display_game()
+                self.display_game(dt)
                 
     # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
@@ -87,18 +91,20 @@ class Game():
         text_rect.center = (x, y)
         self.game_display.blit(text_surface, text_rect)
     
-    def display_game(self):
+    def display_game(self, dt):
         if self.run_game_display:
             # Cenário mostrado na tela
             self.window.blit(self.scenario_img, (0, 0))
             # Player mostrado na tela
-            self.player.update()
+            self.player.update(dt)
             # Score mostrado na tela
             self.score.update(0)
             # Barra de fome mostrado na tela
-            self.hunger.update(self.clock.tick(60))
+            self.hunger.update(dt)
             # Mostrar vidas na tela
             self.player.draw_lives(self.window, constants.HUNGER_LIVES_X, constants.LIVES_Y, self.player.lives, self.player.lives_img)
+            all_sprites.update()
+            all_sprites.draw(self.window)
             pygame.display.update()
     
     def retry(self):
@@ -109,7 +115,7 @@ class Game():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                            self.hunger._curr_hungry = 20
+                            self.hunger._curr_hungry = 100
                             self.player.lives = 5
                             self.player.dead = False
                             self.playing = True
