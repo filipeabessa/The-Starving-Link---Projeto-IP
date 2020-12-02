@@ -54,7 +54,7 @@ class Hunger:
             self.screen, (0, 250, 0), self._get_bar_rect(modifier)
         )  # barra
         pygame.draw.rect(self.screen, (150, 75, 0), self._get_bar_rect(), 1)  # bordas
-        pygame.display.flip()  # Mostra as barras na tela
+        #pygame.display.flip()  # Mostra as barras na tela
 
     @classmethod  # Método estático
     def _get_bar_rect(cls, y_modifier=0):
