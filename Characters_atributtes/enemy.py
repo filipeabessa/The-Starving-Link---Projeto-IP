@@ -3,6 +3,7 @@ from random import randint
 from math import sqrt
 from os import path
 from food import Food
+from score import Score
 from pygame.sprite import Sprite
 from Characters_atributtes import Classe_player
 
@@ -13,7 +14,7 @@ class Enemy(Sprite):
     do jogo e passe a posição do player e a lista de óbstáculos como parâmetro
     """
 
-    def __init__(self, x_pos, y_pos, screen, speed=5):
+    def __init__(self, x_pos, y_pos, screen, score, speed=5):
         Sprite.__init__(self)  # Chama o construtor da classe
         img_path = "./Images/enemy.png"  # Caminho para o sprite
         self._sprite = pygame.image.load(img_path).convert_alpha()  # Sprite sem o fundo
@@ -29,6 +30,7 @@ class Enemy(Sprite):
 
         self._previous_pos = x_pos, y_pos  # Variável usada para facilitar o colisões
         self._is_dead = False  # Guarda se o inimigo ainda está vivo
+        self.score = score
 
     @property
     def pos(self):
@@ -83,6 +85,7 @@ class Enemy(Sprite):
             else:
                 print("Comida")
                 food_list.append(Food("", self.pos[0], self.pos[1], self._screen, True))
+        self.score.increase_score()
 
     def update(self, player_pos: tuple, obstacles: list, enemy_list, food_list):
         """Se o inimigo estiver vivo, atualiza seu sprite na tela e o move em direção

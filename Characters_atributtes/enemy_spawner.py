@@ -7,9 +7,10 @@ class EnemySpawner:
 
     SPAWN_DELAY = 3500  # Delay entre os spawns dos inimigos
 
-    def __init__(self, spawners_pos: list):
+    def __init__(self, spawners_pos: list, score):
         self._spawners_pos = spawners_pos  # A posição dos spawners
         self._timer = self.SPAWN_DELAY  # O timer que registrará o tempo decorrido
+        self.score = score
 
     @property
     def spawns_pos(self):
@@ -31,7 +32,7 @@ class EnemySpawner:
 
         self.reset_timer()
         for spawn in self.spawns_pos:  # Spawne um inimigo em cada spawn
-            enemy_list.append(enemy.Enemy(spawn[0], spawn[1], screen))
+            enemy_list.append(enemy.Enemy(spawn[0], spawn[1], screen, self.score))
 
     def reset_timer(self):
         """Reseta o timer"""

@@ -3,31 +3,30 @@ import constants
 
 
 class Score:
-    def __init__(self, surface, score):
+    def __init__(self, surface, game):
         # --Class Attributes--
+        self.game = game
 
+        self.score = 0
         # Score value
-        self.score_str = str(score)
+        self.score_str = str(self.score)
 
         self.surface = surface
 
-        # Draw score on the screen
-        self.draw_score()
+        # Fonte do score
+        self.font = pygame.font.match_font("arial")
 
-    def draw_score(self):
-        # Font format
-        font_name = pygame.font.match_font("arial")
-        # Font size
-        size = 18
-        font = pygame.font.Font(font_name, size)
+    def increase_score(self):
+        self.score += 1
 
-        text_surface = font.render(self.score_str, True, (255, 255, 255))
-
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (constants.SCORE_POS_X, constants.SCORE_POS_Y)
-
-        self.surface.blit(text_surface, text_rect)
-
-    def update(self, new_score):
-        self.score_str = str(new_score)
-        self.draw_score()
+    def update(self):
+        self.score_str = str(self.score)
+        self.game.draw_text(
+            f"Score: {self.score_str} ",
+            20,
+            constants.SCORE_POS_X,
+            constants.SCORE_POS_Y,
+            self.game.window,
+            constants.RED,
+            self.font,
+        )

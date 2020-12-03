@@ -50,7 +50,7 @@ class Game:
 
         # Cria instâncias das classes
 
-        self.score = Score(self.window, 0)
+        self.score = Score(self.window, self)
         self.hunger = hunger.Hunger(self.window)
         self.menu = Menu(self)
         self.game_over = Game_over(self)
@@ -66,7 +66,8 @@ class Game:
                 constants.ENEMY_2_POS,
                 constants.ENEMY_3_POS,
                 constants.ENEMY_4_POS,
-            ]
+            ],
+            self.score,
         )
 
         self.enemies = []  # Lista de inimigos na tela
@@ -125,9 +126,9 @@ class Game:
         if self.playing:
             Food.start_spawn()  # Inicia o spawn de comidas
             first_frame = True
-            while not self.player.dead: 
+            while not self.player.dead:
                 # Controla o delta_time
-                dt = self.clock.tick(60)
+                dt = self.clock.tick(40)
                 if first_frame:
                     dt = 0
                     first_frame = False
@@ -184,7 +185,18 @@ class Game:
             # Player mostrado na tela
             self.player.update(dt)
             # Score mostrado na tela
-            self.score.update(0)
+
+            # self.draw_text(
+            #     "Score:",
+            #     20,
+            #     constants.SCORE_POS_X,
+            #     constants.SCORE_POS_Y,
+            #     self.window,
+            #     constants.RED,
+            #     self.font_name,
+            # )
+
+            self.score.update()
             # Barra de fome mostrado na tela
             self.hunger.update(dt)
             # Mostrar vidas na tela
