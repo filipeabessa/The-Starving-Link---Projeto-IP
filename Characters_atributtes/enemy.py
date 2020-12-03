@@ -1,10 +1,10 @@
+import pygame
 from random import randint
 from math import sqrt
 from os import path
 from food import Food
-import pygame
 from pygame.sprite import Sprite
-import Classe_player
+from Characters_atributtes import Classe_player
 
 
 class Enemy(Sprite):
@@ -13,11 +13,9 @@ class Enemy(Sprite):
     do jogo e passe a posição do player e a lista de óbstáculos como parâmetro
     """
 
-    def __init__(self, x_pos, y_pos, screen, speed = 5):
+    def __init__(self, x_pos, y_pos, screen, speed=5):
         Sprite.__init__(self)  # Chama o construtor da classe
-        img_path = path.join(
-            path.dirname(__file__), "enemy.png"
-        )  # Caminho para o sprite
+        img_path = "./Images/enemy.png"  # Caminho para o sprite
         self._sprite = pygame.image.load(img_path).convert_alpha()  # Sprite sem o fundo
         self._direction = (0, 0)  # A direção a qual o inimigo vai seguir
         self._speed = speed  # A velocidade com o qual o inimigo se movimenta
@@ -31,7 +29,6 @@ class Enemy(Sprite):
 
         self._previous_pos = x_pos, y_pos  # Variável usada para facilitar o colisões
         self._is_dead = False  # Guarda se o inimigo ainda está vivo
-
 
     @property
     def pos(self):
@@ -75,7 +72,7 @@ class Enemy(Sprite):
 
         self._is_dead = True  # Marca o inimigo como morto
         rand = randint(1, 10)  # Gera um int aleatório entre 1 a 10
-        enemy_list.remove(self) # Remove o inimigo da lista para remover-lo do jogo
+        enemy_list.remove(self)  # Remove o inimigo da lista para remover-lo do jogo
 
         # Se o num for 10, dropa um buff; se for 8 ou 9, dropa comida; senão, nada dropa
         if rand > 7:
@@ -85,13 +82,13 @@ class Enemy(Sprite):
                 # TODO: dropa um buff
             else:
                 print("Comida")
-                food_list.append(Food("",self.pos[0], self.pos[1], self._screen, True))
+                food_list.append(Food("", self.pos[0], self.pos[1], self._screen, True))
 
     def update(self, player_pos: tuple, obstacles: list, enemy_list, food_list):
         """Se o inimigo estiver vivo, atualiza seu sprite na tela e o move em direção
         ao player'. Recebe a posição do player, uma lista de óbstaculos e a lista de
         inimigos."""
-        
+
         # Se o inimigo for atingido por uma bala, faça o inimigo morrer e destrua a bala
         for arrow in Classe_player.bullets:
             if self.rect.colliderect(arrow.rect):

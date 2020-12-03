@@ -1,6 +1,6 @@
 import pygame
-from bullets import Bullets
-from spritesheet import Spritesheet
+from Characters_atributtes import projectile
+from Characters_atributtes import spritesheet
 from math import sqrt
 from os import path
 import constants
@@ -11,7 +11,7 @@ bullets = pygame.sprite.Group()
 # Cria a classe do player
 class Player(pygame.sprite.Sprite):
     # Construtor
-    def __init__(self, color, hunger, game, game_over, scenario):
+    def __init__(self, hunger, game, game_over, scenario):
 
         self.game_over = game_over
         self.game = game
@@ -32,11 +32,11 @@ class Player(pygame.sprite.Sprite):
         self.walking = False  # Booleano para saber se o player está se movimentando
         self.n = 0  # Atributo que vai ser usado na escolha da imagem mostrada
 
-        # Cria um Rect com as dimensões do bloco
+        # Cria um Rect com as dimensões do bloco do Player
         self.image = self.list_images[0]
-        self.rect = self.image.get_rect()
-        self.rect.centerx = constants.DISPLAY_HEIGHT / 2
-        self.rect.bottom = constants.DISPLAY_WIDTH / 2
+        self.player_rect = self.image.get_rect()
+        self.player_rect.centerx = constants.DISPLAY_HEIGHT / 2
+        self.player_rect.bottom = constants.DISPLAY_WIDTH / 2
 
         # Velocidade no eixo X
         self.speedx = 0
@@ -51,7 +51,7 @@ class Player(pygame.sprite.Sprite):
         # Vidas do player
         self.lives = 5
         self.lives_limit = 5
-        self.lives_img = pygame.image.load("8bitheart.png")
+        self.lives_img = pygame.image.load("./Images/8bitheart.png")
 
         # Se o player perder uma vida, vai ser mudado para True, para os enemies não conseguirem atacar por algum tempo
         self.invincible = False
@@ -73,28 +73,28 @@ class Player(pygame.sprite.Sprite):
         keystate = pygame.key.get_pressed()
         # Condicionais para mover o player de acordo com a tecla pressionada
         if keystate[pygame.K_a]:
-            if self.rect.x > constants.SCENARIO_WALKING_LIMIT_LEFT:
-                if not self.rect.colliderect(self.scenario.statue_left):
+            if self.player_rect.x > constants.SCENARIO_WALKING_LIMIT_LEFT:
+                if not self.player_rect.colliderect(self.scenario.statue_left):
                     self.speedx = -7
                     self.walking = True  # Só vai ser true se o player estiver andando (em qualquer direção)
                     self.n = 2  # O valor para achar o frame correto dessa imagem é 2
             # Ele tem o mesmo significado nas outras condicionais
         if keystate[pygame.K_d]:
-            if self.rect.x < constants.SCENARIO_WALKING_LIMIT_RIGHT:
-                if not self.rect.colliderect(self.scenario.statue_right):
+            if self.player_rect.x < constants.SCENARIO_WALKING_LIMIT_RIGHT:
+                if not self.player_rect.colliderect(self.scenario.statue_right):
                     self.speedx = 7
                     self.walking = True
                     self.n = 0
         if keystate[pygame.K_w]:
-            if self.rect.y > constants.SCENARIO_WALKING_LIMIT_TOP:
-                if (not self.rect.colliderect(self.scenario.statue_left)) and (
-                    not self.rect.colliderect(self.scenario.statue_right)
+            if self.player_rect.y > constants.SCENARIO_WALKING_LIMIT_TOP:
+                if (not self.player_rect.colliderect(self.scenario.statue_left)) and (
+                    not self.player_rect.colliderect(self.scenario.statue_right)
                 ):
                     self.speedy = -7
                     self.walking = True
                     self.n = 3
         if keystate[pygame.K_s]:
-            if self.rect.y < constants.SCENARIO_WALKING_LIMIT_DOWN:
+            if self.player_rect.y < constants.SCENARIO_WALKING_LIMIT_DOWN:
                 self.speedy = 7
                 self.walking = True
                 self.n = 1
@@ -109,8 +109,8 @@ class Player(pygame.sprite.Sprite):
             speed_vec = 0, 0
 
         # Mover o rect de acordo com a velocidade
-        self.rect.x += speed_vec[0]
-        self.rect.y += speed_vec[1]
+        self.player_rect.x += speed_vec[0]
+        self.player_rect.y += speed_vec[1]
 
         if self.timer > 0:
             self.timer = self.timer - dt
@@ -198,9 +198,9 @@ class Player(pygame.sprite.Sprite):
         self.game_over.run_display = True
         all_sprites.empty()
 
-    # Recebe o sprite e retorna uma tupla com as coordenadas dele
+    # Recebe o sprite e retorna uma tupla com as coordenadas do player
     def coordenadas(self):
-        return (self.rect.x, self.rect.y)
+        return (self.player_rect.x, self.player_rect.y)
 
     # Define método para atirar flechas
     def shoot(self):
@@ -217,40 +217,46 @@ class Player(pygame.sprite.Sprite):
         # Condicionais para verificar se as setas direcionais estão pressionadas
         if keystate[pygame.K_UP]:
             direction[1] = -1  # Muda o valor do vetor direção no eixo y
-            imagem = "Arrow_up.png"  # Escolhe a imagem a ser mostrada (válido para os outros if's)
-            pos_x = self.rect.centerx  # Define a posição da flecha se atirada para cima
-            pos_y = self.rect.top  # Define a posição da flecha se atirada para cima
+            imagem = "./Images/Arrow_up.png"  # Escolhe a imagem a ser mostrada (válido para os outros if's)
+            pos_x = (
+                self.player_rect.centerx
+            )  # Define a posição da flecha se atirada para cima
+            pos_y = (
+                self.player_rect.top
+            )  # Define a posição da flecha se atirada para cima
         if keystate[pygame.K_RIGHT]:
             direction[0] = 1
-            imagem = "Arrow_right.png"
+            imagem = "./Images/Arrow_right.png"
             pos_x = (
-                self.rect.right
+                self.player_rect.right
             )  # Define a posição da flecha se atirada para a direita
             pos_y = (
-                self.rect.centery
+                self.player_rect.centery
             )  # Define a posição da flecha se atirada para a direita
         if keystate[pygame.K_LEFT]:
             direction[0] = -1
-            imagem = "Arrow_left.png"
+            imagem = "./Images/Arrow_left.png"
             pos_x = (
-                self.rect.left
+                self.player_rect.left
             )  # Define a posição da flecha se atirada para a esquerda
             pos_y = (
-                self.rect.centery
+                self.player_rect.centery
             )  # Define a posição da flecha se atirada para a esquerda
         if keystate[pygame.K_DOWN]:
             direction[1] = 1
-            imagem = "Arrow_down.png"
+            imagem = "./Images/Arrow_down.png"
             pos_x = (
-                self.rect.centerx
+                self.player_rect.centerx
             )  # Define a posição da flecha se atirada para baixo
-            pos_y = self.rect.bottom  # Define a posição da flecha se atirada para baixo
+            pos_y = (
+                self.player_rect.bottom
+            )  # Define a posição da flecha se atirada para baixo
 
         # Só permite atirar se o vetor for diferente de [0, 0], ou seja, se alguma seta for pressionada
         if direction != [0, 0]:
             magnitude = sqrt(direction[0] ** 2 + direction[1] ** 2)
             # Cria a classe da flecha
-            bullet = Bullets(
+            bullet = projectile.Bullets(
                 pos_x,
                 pos_y,
                 (direction[0] * speed) / magnitude,

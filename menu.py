@@ -14,9 +14,9 @@ class Menu:
         self.startx = constants.DISPLAY_WIDTH / 2
         self.starty = constants.DISPLAY_HEIGHT / 2
 
-        self.menu_img = pygame.image.load("start_img.png")
+        self.menu_img = pygame.image.load("./Images/start_img.png")
 
-        self.font_zelda = "Ravenna.ttf"
+        self.font_zelda = "./Fonts/Ravenna.ttf"
 
     # Exibe o menu na tela
     def display_menu(self):

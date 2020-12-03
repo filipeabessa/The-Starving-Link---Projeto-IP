@@ -10,8 +10,8 @@ class Game_over:
         # é setado para True quando o loop do jogo para
         self.run_display = False
 
-        self.game_over_img = pygame.image.load("game_over.png")
-        self.font_zelda = "Ravenna.ttf"
+        self.game_over_img = pygame.image.load("./Images/game_over.png")
+        self.font_zelda = "./Fonts/Ravenna.ttf"
 
     # Exibe a tela de Game Over
     def display_game_over(self):

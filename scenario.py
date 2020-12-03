@@ -17,3 +17,5 @@ class Scenario:
             constants.STATUES_WIDTH,
             constants.STATUES_HEIGHT,
         )
+        # Imagem do cenário do jogo
+        self.scenario_img = pygame.image.load("./Images/hirule3.png")

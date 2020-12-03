@@ -1,5 +1,6 @@
 import pygame
 from pygame import transform
+import constants
 
 # Cria a classe para o objeto que serão as flechas
 class Bullets(pygame.sprite.Sprite):
@@ -49,9 +50,9 @@ class Bullets(pygame.sprite.Sprite):
         # Condicional para verificar se a flecha saiu da tela
         # Caso a flecha tenha saído, dá um kill nela
         if (
-            self.rect.bottom < 0
-            or self.rect.centerx > 800
-            or self.rect.bottom > 684
-            or self.rect.centerx < 0
+            self.rect.y < constants.SCENARIO_WALKING_LIMIT_TOP
+            or self.rect.x > constants.SCENARIO_WALKING_LIMIT_RIGHT + 10
+            or self.rect.y > constants.SCENARIO_WALKING_LIMIT_DOWN + 30
+            or self.rect.x < constants.SCENARIO_WALKING_LIMIT_LEFT
         ):
             self.kill()

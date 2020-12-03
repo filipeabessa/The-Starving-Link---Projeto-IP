@@ -1,17 +1,19 @@
 import pygame
 from menu import *
-from hunger import Hunger
-from Classe_player import Player, all_sprites, bullets
-from spritesheet import Spritesheet
+from Characters_atributtes import hunger
+from Characters_atributtes import (
+    Classe_player,
+)  # DONE       #Player, all_sprites, bullets
+from Characters_atributtes import spritesheet  # DONE
 from score import Score
 from food import Food
 from game_over import Game_over
-from bullets import Bullets
-from enemy import Enemy
+from Characters_atributtes import projectile
+from Characters_atributtes import enemy
 from items_count import Items_count
 from os import path
 from scenario import Scenario
-from enemy_spawner import EnemySpawner
+from Characters_atributtes import enemy_spawner
 import constants
 
 
@@ -46,22 +48,19 @@ class Game:
         # Fonte padrão do pygame para usar na start menu
         self.font_name = pygame.font.get_default_font()
 
-        # Imagem do cenário do jogo
-        self.scenario_img = pygame.image.load("hirule3.png")
-
         # Cria instâncias das classes
 
         self.score = Score(self.window, 0)
-        self.hunger = Hunger(self.window)
+        self.hunger = hunger.Hunger(self.window)
         self.menu = Menu(self)
         self.game_over = Game_over(self)
         self.scenario = Scenario()
-        self.spritesheet = Spritesheet("positions_link.gif")
-        self.player = Player(
-            constants.BLACK, self.hunger, self, self.game_over, self.scenario
+        self.spritesheet = spritesheet.Spritesheet("./Images/positions_link.gif")
+        self.player = Classe_player.Player(
+            self.hunger, self, self.game_over, self.scenario
         )
 
-        self.enemy_spawners = EnemySpawner(
+        self.enemy_spawners = enemy_spawner.EnemySpawner(
             [
                 constants.ENEMY_1_POS,
                 constants.ENEMY_2_POS,
@@ -81,10 +80,14 @@ class Game:
 
         # Dicionario com os icones das comidas
         self.food_images = {
-            "apple": (pygame.image.load(path.join("", "Apple.png")).convert_alpha()),
-            "bread": (pygame.image.load(path.join("", "Bread.png")).convert_alpha()),
+            "apple": (
+                pygame.image.load(path.join("", "./Images/Apple.png")).convert_alpha()
+            ),
+            "bread": (
+                pygame.image.load(path.join("", "./Images/Bread.png")).convert_alpha()
+            ),
             "chicken": (
-                pygame.image.load(path.join("", "Chicken.png")).convert_alpha()
+                pygame.image.load(path.join("", "./Images/Chicken.png")).convert_alpha()
             ),
         }
 
@@ -120,7 +123,6 @@ class Game:
             # e assim o menu some da tela e o loop do jogo é iniciado
             self.menu.check_if_game_started()
         if self.playing:
-            hunger = Hunger(self.window)
             Food.start_spawn()  # Inicia o spawn de comidas
             while not self.player.dead:
                 dt = self.clock.tick(60)
@@ -172,7 +174,7 @@ class Game:
     def display_game(self, dt):
         if self.run_game_display:
             # Cenário mostrado na tela
-            self.window.blit(self.scenario_img, (0, 0))
+            self.window.blit(self.scenario.scenario_img, (0, 0))
             # Player mostrado na tela
             self.player.update(dt)
             # Score mostrado na tela
@@ -190,7 +192,7 @@ class Game:
             self.breads_count.update(self.breads_caught)
             self.chickens_count.update(self.chickens_caught)
 
-            all_sprites.update()
+            Classe_player.all_sprites.update()
             # Atualiza a imagem de todas as comidas
             for food in self.food_list:
                 food.update()
@@ -202,10 +204,10 @@ class Game:
                     self.enemies,
                     self.food_list,
                 )
-            all_sprites.draw(self.window)
+            Classe_player.all_sprites.draw(self.window)
             pygame.display.update()
 
-            for arrow in bullets:
+            for arrow in Classe_player.bullets:
                 s = pygame.Surface((arrow.rect.width, arrow.rect.height))
                 s.fill((255, 0, 0))
                 self.window.blit(s, (arrow.rect.x, arrow.rect.y))
