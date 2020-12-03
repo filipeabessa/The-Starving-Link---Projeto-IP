@@ -111,6 +111,7 @@ class Game:
             hunger = Hunger(self.window)
             Food.start_spawn()  # Inicia o spawn de comidas
             while not self.player.dead:
+
                 dt = self.clock.tick(60)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -131,6 +132,9 @@ class Game:
                 self.player.check_hunger()
                 self.player.check_lives()
                 self.display_game(dt)
+                pygame.draw.rect(
+                    self.window, constants.BLACK, self.scenario.statue_left
+                )
 
     # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):

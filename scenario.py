@@ -6,14 +6,14 @@ class Scenario:
     def __init__(self):
 
         self.statue_left = pygame.Rect(
-            50,
-            10,
-            constants.SCENARIO_WALKING_LIMIT_LEFT,
-            constants.SCENARIO_WALKING_LIMIT_TOP,
+            constants.RECT_STATUE_LEFT_POS_X,
+            constants.RECT_STATUE_LEFT_POS_Y,
+            constants.STATUES_WIDTH,
+            constants.STATUES_HEIGHT,
         )
         self.statue_right = pygame.Rect(
-            50,
-            50,
-            constants.SCENARIO_WALKING_LIMIT_TOP,
-            constants.SCENARIO_WALKING_LIMIT_RIGHT - 50,
+            constants.RECT_STATUE_RIGHT_POS_X,
+            constants.RECT_STATUE_RIGHT_POS_Y,
+            constants.STATUES_WIDTH,
+            constants.STATUES_HEIGHT,
         )

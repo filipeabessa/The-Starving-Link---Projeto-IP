@@ -68,10 +68,14 @@ class Player(pygame.sprite.Sprite):
                     self.speedx = -7
         if keystate[pygame.K_d]:
             if self.rect.x < constants.SCENARIO_WALKING_LIMIT_RIGHT:
-                self.speedx = 7
+                if not self.rect.colliderect(self.scenario.statue_right):
+                    self.speedx = 7
         if keystate[pygame.K_w]:
             if self.rect.y > constants.SCENARIO_WALKING_LIMIT_TOP:
-                self.speedy = -7
+                if (not self.rect.colliderect(self.scenario.statue_left)) and (
+                    not self.rect.colliderect(self.scenario.statue_right)
+                ):
+                    self.speedy = -7
         if keystate[pygame.K_s]:
             if self.rect.y < constants.SCENARIO_WALKING_LIMIT_DOWN:
                 self.speedy = 7
