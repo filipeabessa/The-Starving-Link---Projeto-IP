@@ -59,6 +59,7 @@ class Player(pygame.sprite.Sprite):
         self.damaged = False
 
     def hit(self):
+        self.lives = self.lives - 1
         self.invincible = True
         self.damaged = True
         self.damage_alpha = chain(constants.DAMAGE_ALPHA * 3)

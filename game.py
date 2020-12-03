@@ -200,7 +200,13 @@ class Game:
             self.enemies_group.add(enimie)
 
     def check_colission(self):
-        hits = pygame.sprite.spritecollide(self.player, self.enemies_group, False
-        )
+        hits = pygame.sprite.spritecollide(self.player, self.enemies_group, False)
         if hits and not self.player.invincible:
             self.player.hit()
+            self.player.draw_lives(
+                self.window,
+                constants.HUNGER_LIVES_X,
+                constants.LIVES_Y,
+                self.player.lives,
+                self.player.lives_img
+            )
