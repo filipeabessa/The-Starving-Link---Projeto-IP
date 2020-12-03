@@ -9,7 +9,7 @@ bullets = pygame.sprite.Group()
 # Cria a classe do player
 class Player(pygame.sprite.Sprite):
     # Construtor
-    def __init__(self, color, hunger, game, game_over):
+    def __init__(self, color, hunger, game, game_over, scenario):
 
         self.game_over = game_over
         self.game = game
@@ -53,6 +53,8 @@ class Player(pygame.sprite.Sprite):
         # Player inicialmente não está morto
         self.dead = False
 
+        self.scenario = scenario
+
     def update(self, dt=0):
         # A velocidade sempre será 0 para mover apenas quando uma tecla for pressionada
         self.speedx = 0
@@ -62,7 +64,8 @@ class Player(pygame.sprite.Sprite):
         # Condicionais para mover o player de acordo com a tecla pressionada
         if keystate[pygame.K_a]:
             if self.rect.x > constants.SCENARIO_WALKING_LIMIT_LEFT:
-                self.speedx = -7
+                if not self.rect.colliderect(self.scenario.statue_left):
+                    self.speedx = -7
         if keystate[pygame.K_d]:
             if self.rect.x < constants.SCENARIO_WALKING_LIMIT_RIGHT:
                 self.speedx = 7

@@ -9,6 +9,7 @@ from bullets import Bullets
 from enemy import Enemy
 from items_count import Items_count
 from os import path
+from scenario import Scenario
 import constants
 
 
@@ -52,11 +53,9 @@ class Game:
         self.hunger = Hunger(self.window)
         self.menu = Menu(self)
         self.game_over = Game_over(self)
+        self.scenario = Scenario()
         self.player = Player(
-            constants.BLACK,
-            self.hunger,
-            self,
-            self.game_over,
+            constants.BLACK, self.hunger, self, self.game_over, self.scenario
         )
 
         self.enemies = [Enemy(700, 600, 5, self.window)]  # Lista de inimigos na tela
@@ -147,12 +146,12 @@ class Game:
                     self.run_game_display = True
 
     # Escreve na tela
-    def draw_text(self, text, size, x, y):
-        font = pygame.font.Font(self.font_name, size)
-        text_surface = font.render(text, True, constants.WHITE)
+    def draw_text(self, text, size, x, y, display, text_color, font):
+        font = pygame.font.Font(font, size)
+        text_surface = font.render(text, True, text_color)
         text_rect = text_surface.get_rect()
         text_rect.center = (x, y)
-        self.game_display.blit(text_surface, text_rect)
+        display.blit(text_surface, text_rect)
 
     def display_game(self, dt):
         if self.run_game_display:
