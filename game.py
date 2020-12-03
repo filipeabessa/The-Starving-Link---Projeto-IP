@@ -124,8 +124,14 @@ class Game:
             self.menu.check_if_game_started()
         if self.playing:
             Food.start_spawn()  # Inicia o spawn de comidas
-            while not self.player.dead:
+            first_frame = True
+            while not self.player.dead: 
+                # Controla o delta_time
                 dt = self.clock.tick(60)
+                if first_frame:
+                    dt = 0
+                    first_frame = False
+
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.player.dead = True
