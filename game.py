@@ -2,6 +2,7 @@ import pygame
 from menu import *
 from hunger import Hunger
 from Classe_player import Player, all_sprites
+from spritesheet import Spritesheet
 from score import Score
 from food import Food
 from game_over import Game_over
@@ -54,6 +55,7 @@ class Game:
         self.menu = Menu(self)
         self.game_over = Game_over(self)
         self.scenario = Scenario()
+        self.spritesheet = Spritesheet("positions_link.gif")
         self.player = Player(
             constants.BLACK, self.hunger, self, self.game_over, self.scenario
         )
