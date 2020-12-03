@@ -1,6 +1,7 @@
 from random import randint
 from math import sqrt
 from os import path
+from food import Food
 import pygame
 from pygame.sprite import Sprite
 import Classe_player
@@ -66,7 +67,7 @@ class Enemy(Sprite):
             self.rect.x = self._previous_pos[0]
             self.rect.y = self._previous_pos[1]
 
-    def die(self, enemy_list):
+    def die(self, enemy_list, food_list):
         """Desabilita a função update e têm 30% de chance de dropar um item, sendo
         66% de chance de ser uma comida e 33% de ser um buff"""
         if self._is_dead:
@@ -84,9 +85,9 @@ class Enemy(Sprite):
                 # TODO: dropa um buff
             else:
                 print("Comida")
-                # Food("",self.pos[0], self.pos[1], self._screen, True)
+                food_list.append(Food("",self.pos[0], self.pos[1], self._screen, True))
 
-    def update(self, player_pos: tuple, obstacles: list, enemy_list):
+    def update(self, player_pos: tuple, obstacles: list, enemy_list, food_list):
         """Se o inimigo estiver vivo, atualiza seu sprite na tela e o move em direção
         ao player'. Recebe a posição do player, uma lista de óbstaculos e a lista de
         inimigos."""
@@ -95,7 +96,7 @@ class Enemy(Sprite):
         for arrow in Classe_player.bullets:
             if self.rect.colliderect(arrow.rect):
                 arrow.kill()
-                self.die(enemy_list)
+                self.die(enemy_list, food_list)
 
         if self._is_dead:  # Se não está morto, move e mostra o inimigo na tela
             return

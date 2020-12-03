@@ -163,7 +163,7 @@ class Game:
                 food.update()
             # Atualiza o inimigo
             for enemy in self.enemies:
-                enemy.update(self.player.coordenadas(), [] + self.enemies, self.enemies)
+                enemy.update(self.player.coordenadas(), [] + self.enemies, self.enemies, self.food_list)
             all_sprites.draw(self.window)
             pygame.display.update()
 
