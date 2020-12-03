@@ -1,7 +1,7 @@
 import pygame
 from menu import *
 from hunger import Hunger
-from Classe_player import Player, all_sprites
+from Classe_player import Player, all_sprites, bullets
 from score import Score
 from food import Food
 from game_over import Game_over
@@ -9,6 +9,7 @@ from bullets import Bullets
 from enemy import Enemy
 from items_count import Items_count
 from os import path
+from enemy_spawner import EnemySpawner
 import constants
 
 
@@ -59,7 +60,8 @@ class Game:
             self.game_over,
         )
 
-        self.enemies = [Enemy(700, 600, 5, self.window)]  # Lista de inimigos na tela
+        self.enemy_spawners = EnemySpawner([(0,600),(500,600),(250,600)])
+        self.enemies = []  # Lista de inimigos na tela
         self.food_list = []  # Lista de comidas na tela
 
         #Contadores de itens pegos
@@ -112,6 +114,7 @@ class Game:
                 self.player.check_hunger()
                 self.player.check_lives()
                 self.display_game(dt)
+                self.enemy_spawners.update(dt,self.enemies,self.window)
 
     # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
@@ -163,9 +166,14 @@ class Game:
                 food.update()
             # Atualiza o inimigo
             for enemy in self.enemies:
-                enemy.update(self.player.coordenadas(), [] + self.enemies)
+                enemy.update(self.player.coordenadas(), [] + self.enemies, self.enemies)
             all_sprites.draw(self.window)
             pygame.display.update()
+
+            for arrow in bullets:
+                s = pygame.Surface((arrow.rect.width,arrow.rect.height))
+                s.fill((255,0,0))
+                self.window.blit(s,(arrow.rect.x,arrow.rect.y))
 
     def retry(self):
         for event in pygame.event.get():
@@ -175,6 +183,7 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    self.enemy_spawners.reset_timer()
                     self.hunger._curr_hungry = 100
                     self.player.lives = 5
                     self.player.dead = False

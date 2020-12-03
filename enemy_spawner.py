@@ -28,6 +28,10 @@ class EnemySpawner:
     def spawn(self, enemy_list: list, screen):
         '''Spawna os inimigos e reseta o timer. Precisa receber a lista de inimigos e a tela'''
 
-        self._timer = self.SPAWN_DELAY # Reseta o timer
+        self.reset_timer() 
         for spawn in self.spawns_pos: # Spawne um inimigo em cada spawn
             enemy_list.append(Enemy(spawn[0],spawn[1],screen))
+
+    def reset_timer(self):
+        '''Reseta o timer'''
+        self._timer = self.SPAWN_DELAY # Faz com que o timer seja igual ao delay
