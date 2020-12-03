@@ -22,7 +22,7 @@ food_list = {
 # Food class
 class Food:
 
-    SPAWN_DELAY = 20000  # Delay entre os spawns de comida
+    SPAWN_DELAY = 2000  # Delay entre os spawns de comida
     FOOD_SPAWN_EVENT = pygame.USEREVENT  # Evento para gerar a comida
 
     # Constructor
@@ -52,6 +52,11 @@ class Food:
         else:
             self._y_pos = 0
 
+        #Cria o rect da comida
+        self._rect = self.sprite.get_rect()
+        self._rect.x = self._x_pos
+        self._rect.y = self._y_pos
+
         self.screen = screen
 
     @classmethod
@@ -79,6 +84,10 @@ class Food:
     @property
     def y_pos(self):
         return self._y_pos
+
+    @property
+    def rect(self):
+        return self._rect
 
     def get_coords(self):
         return self.x_pos, self.y_pos
