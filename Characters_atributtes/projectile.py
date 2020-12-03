@@ -51,7 +51,7 @@ class Bullets(pygame.sprite.Sprite):
         # Caso a flecha tenha saído, dá um kill nela
         if (
             self.rect.y < constants.SCENARIO_WALKING_LIMIT_TOP
-            or self.rect.x > constants.SCENARIO_WALKING_LIMIT_RIGHT + 10
+            or self.rect.x > constants.SCENARIO_WALKING_LIMIT_RIGHT + 30
             or self.rect.y > constants.SCENARIO_WALKING_LIMIT_DOWN + 30
             or self.rect.x < constants.SCENARIO_WALKING_LIMIT_LEFT
         ):

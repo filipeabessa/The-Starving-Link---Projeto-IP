@@ -5,8 +5,7 @@ from Characters_atributtes import enemy
 class EnemySpawner:
     """Classe para controlar o spawn dos dos inimigos."""
 
-    # SPAWN_DELAY = 10000  # Delay entre os spawns dos inimigos
-    SPAWN_DELAY = 1000  # Delay entre os spawns dos inimigos
+    SPAWN_DELAY = 2500  # Delay entre os spawns dos inimigos
 
     def __init__(self, spawners_pos: list):
         self._spawners_pos = spawners_pos  # A posição dos spawners

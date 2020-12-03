@@ -230,7 +230,7 @@ class Game:
                     self.food_list.clear()
                     self.enemies.clear()
 
-                    self.player.rect.centerx = constants.DISPLAY_WIDTH / 2
-                    self.player.rect.bottom = constants.DISPLAY_HEIGHT / 2
+                    self.player.player_rect.centerx = constants.DISPLAY_WIDTH / 2
+                    self.player.player_rect.bottom = constants.DISPLAY_HEIGHT / 2
 
                     # TODO fazer os inimigos sumirem da tela
