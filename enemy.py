@@ -12,7 +12,7 @@ class Enemy(Sprite):
     do jogo e passe a posição do player e a lista de óbstáculos como parâmetro
     """
 
-    def __init__(self, x_pos, y_pos, speed, screen):
+    def __init__(self, x_pos, y_pos, screen, speed = 5):
         Sprite.__init__(self)  # Chama o construtor da classe
         img_path = path.join(
             path.dirname(__file__), "enemy.png"
