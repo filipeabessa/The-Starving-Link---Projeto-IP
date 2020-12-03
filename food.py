@@ -1,15 +1,14 @@
 from random import randint, choice
+from os import path
 import pygame
 
 # Food dictionary with health points for the constructor
 # TODO: Edit food list with final values
 food_list = {
-    'apple': {'points': 5, 'color': (255,0,0)},
-    'cheese': {'points': 10, 'color': (255,255,0)},
-    'egg': {'points': 20, 'color': (255,255,255)},
-    'chicken': {'points': 40, 'color': (235,200,178) },
+    'apple': {'points': 40, 'sprite': (pygame.image.load(path.join('', "Apple.png")))},
+    'bread': {'points': 60, 'sprite': (pygame.image.load(path.join('', "Bread.png")))},
+    'chicken': {'points': 80, 'sprite': (pygame.image.load(path.join('', "Chicken.png"))) }
 }
-
 
 # Food class
 class Food:
@@ -31,6 +30,7 @@ class Food:
             self._name = name
 
         self._points = food_list[name]['points']
+        self.sprite = food_list[name]['sprite'].convert_alpha()
         self._caught = False
 
         if x_pos >= 0:
@@ -45,7 +45,6 @@ class Food:
             self._y_pos = 0
 
         self.screen = screen
-        self.sprite = pygame.Surface((10,10))
 
     @classmethod
     def start_spawn(cls):
@@ -115,5 +114,4 @@ class Food:
         '''Mantém o sprite da comida  na tela'''
         # Por enquanto, estou usando quadrados como Placeholder
         if hasattr(self, "name"):
-            self.sprite.fill(food_list[self.name]['color']) # Pinta o quadrado da cor da comida
             self.screen.blit(self.sprite,self.get_coords()) # Coloca o sprite na tela

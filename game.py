@@ -101,15 +101,12 @@ class Game:
                         self.running = False
                         self.playing = False
                         self.menu.run_display = False
-                    if (
-                        event.type == Food.FOOD_SPAWN_EVENT
-                    ):  # Spawna uma comida caso o evento seja chamado
-                        Food.random_spawn(
-                            [],
-                            constants.DISPLAY_WIDTH,
-                            constants.DISPLAY_HEIGHT,
-                            self.window,
-                        )
+
+                    # Spawna uma comida caso o evento de spawn seja chamado
+                    if event.type == Food.FOOD_SPAWN_EVENT:
+                        self.food_list.append(Food.random_spawn([],constants.DISPLAY_WIDTH,
+                        constants.DISPLAY_HEIGHT,self.window))
+
                 self.player.shoot()
                 self.player.check_hunger()
                 self.player.check_lives()
@@ -190,6 +187,7 @@ class Game:
                     self.playing = True
                     self.run_game_display = True
                     self.game_over.run_display = False
+                    self.food_list.clear()
 
                     self.player.rect.centerx = constants.DISPLAY_WIDTH / 2
                     self.player.rect.bottom = constants.DISPLAY_HEIGHT / 2
