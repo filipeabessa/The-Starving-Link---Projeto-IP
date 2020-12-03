@@ -1,7 +1,7 @@
 import pygame
 from menu import *
 from hunger import Hunger
-from Classe_player import Player, all_sprites
+from Classe_player import Player, all_sprites, bullets
 from spritesheet import Spritesheet
 from score import Score
 from food import Food
@@ -11,6 +11,7 @@ from enemy import Enemy
 from items_count import Items_count
 from os import path
 from scenario import Scenario
+from enemy_spawner import EnemySpawner
 import constants
 
 
@@ -60,7 +61,16 @@ class Game:
             constants.BLACK, self.hunger, self, self.game_over, self.scenario
         )
 
-        self.enemies = [Enemy(700, 600, 5, self.window)]  # Lista de inimigos na tela
+        self.enemy_spawners = EnemySpawner(
+            [
+                constants.ENEMY_1_POS,
+                constants.ENEMY_2_POS,
+                constants.ENEMY_3_POS,
+                constants.ENEMY_4_POS,
+            ]
+        )
+
+        self.enemies = []  # Lista de inimigos na tela
         self.food_list = []  # Lista de comidas na tela
 
         # Contadores de itens pegos
@@ -113,7 +123,6 @@ class Game:
             hunger = Hunger(self.window)
             Food.start_spawn()  # Inicia o spawn de comidas
             while not self.player.dead:
-
                 dt = self.clock.tick(60)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -121,22 +130,23 @@ class Game:
                         self.running = False
                         self.playing = False
                         self.menu.run_display = False
-                    if (
-                        event.type == Food.FOOD_SPAWN_EVENT
-                    ):  # Spawna uma comida caso o evento seja chamado
-                        Food.random_spawn(
-                            [],
-                            constants.DISPLAY_WIDTH,
-                            constants.DISPLAY_HEIGHT,
-                            self.window,
+
+                    # Spawna uma comida caso o evento de spawn seja chamado
+                    if event.type == Food.FOOD_SPAWN_EVENT:
+                        self.food_list.append(
+                            Food.random_spawn(
+                                [],
+                                constants.DISPLAY_WIDTH,
+                                constants.DISPLAY_HEIGHT,
+                                self.window,
+                            )
                         )
+
                 self.player.shoot()
                 self.player.check_hunger()
                 self.player.check_lives()
                 self.display_game(dt)
-                pygame.draw.rect(
-                    self.window, constants.BLACK, self.scenario.statue_left
-                )
+                self.enemy_spawners.update(dt, self.enemies, self.window)
 
     # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
@@ -186,9 +196,19 @@ class Game:
                 food.update()
             # Atualiza o inimigo
             for enemy in self.enemies:
-                enemy.update(self.player.coordenadas(), [] + self.enemies)
+                enemy.update(
+                    self.player.coordenadas(),
+                    [] + self.enemies,
+                    self.enemies,
+                    self.food_list,
+                )
             all_sprites.draw(self.window)
             pygame.display.update()
+
+            for arrow in bullets:
+                s = pygame.Surface((arrow.rect.width, arrow.rect.height))
+                s.fill((255, 0, 0))
+                self.window.blit(s, (arrow.rect.x, arrow.rect.y))
 
     def retry(self):
         for event in pygame.event.get():
@@ -198,15 +218,17 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    self.enemy_spawners.reset_timer()
                     self.hunger._curr_hungry = 100
                     self.player.lives = 5
                     self.player.dead = False
                     self.playing = True
                     self.run_game_display = True
                     self.game_over.run_display = False
+                    self.food_list.clear()
+                    self.enemies.clear()
 
                     self.player.rect.centerx = constants.DISPLAY_WIDTH / 2
                     self.player.rect.bottom = constants.DISPLAY_HEIGHT / 2
 
-                    # TODO mandar o player pro centro da tela
                     # TODO fazer os inimigos sumirem da tela

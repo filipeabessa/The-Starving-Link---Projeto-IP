@@ -6,7 +6,7 @@ class Hunger:
     """Classe para gerenciar a fome do player. Para usar-la é necessário criar e guarda um objeto
     da classe quando o jogo começar e chamar a função \'update\' no loop principal do jogo"""
 
-    def __init__(self, screen, curr_hungry=100, starve_time=20):
+    def __init__(self, screen, curr_hungry=100, starve_time=40):
         """Construtor da classe, recebe como parâmetros a tela do jogo o valor atual da fome, o
         tempo para  o player morrer de fome com a barra cheia em segundos"""
         self._max_hungry = (

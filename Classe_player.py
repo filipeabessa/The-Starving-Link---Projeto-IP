@@ -100,9 +100,17 @@ class Player(pygame.sprite.Sprite):
                 self.n = 1
         # Chama o método animate() passando como parâmetro o self.n, para poder achar o frame correto
         self.animate(self.n)
+
+        # Normalização da velocidade
+        magnitude = (self.speedx ** 2 + self.speedy ** 2) ** 0.5
+        if magnitude != 0:
+            speed_vec = (self.speedx / magnitude * 7, self.speedy / magnitude * 7)
+        else:
+            speed_vec = 0, 0
+
         # Mover o rect de acordo com a velocidade
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+        self.rect.x += speed_vec[0]
+        self.rect.y += speed_vec[1]
 
         if self.timer > 0:
             self.timer = self.timer - dt
