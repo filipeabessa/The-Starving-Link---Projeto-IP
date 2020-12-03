@@ -60,6 +60,8 @@ class Game:
         )
 
         self.enemies = [Enemy(700, 600, 5, self.window)]  # Lista de inimigos na tela
+        self.enemies_group = pygame.sprite.Group()
+        self.set_enemies_group()
         self.food_list = []  # Lista de comidas na tela
 
         #Contadores de itens pegos
@@ -112,6 +114,9 @@ class Game:
                 self.player.check_hunger()
                 self.player.check_lives()
                 self.display_game(dt)
+
+                self.check_colission()
+
 
     # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
@@ -181,9 +186,21 @@ class Game:
                     self.playing = True
                     self.run_game_display = True
                     self.game_over.run_display = False
+                    self.player.damaged = False
+                    self.player.invincible = False
 
                     self.player.rect.centerx = constants.DISPLAY_WIDTH / 2
                     self.player.rect.bottom = constants.DISPLAY_HEIGHT / 2
 
                     # TODO mandar o player pro centro da tela
                     # TODO fazer os inimigos sumirem da tela
+
+    def set_enemies_group(self):
+        for enimie in self.enemies:
+            self.enemies_group.add(enimie)
+
+    def check_colission(self):
+        hits = pygame.sprite.spritecollide(self.player, self.enemies_group, False
+        )
+        if hits and not self.player.invincible:
+            self.player.hit()

@@ -1,6 +1,7 @@
 import pygame
 from bullets import Bullets
 from os import path
+from itertools import chain
 import constants
 
 all_sprites = pygame.sprite.Group()
@@ -23,6 +24,7 @@ class Player(pygame.sprite.Sprite):
             path.dirname(__file__), "link_front.png"
         )  # Caminho para o sprite
         self.image = pygame.image.load(img_path).convert_alpha()  # Sprite sem o fundo
+        self.player_img = pygame.image.load(img_path).convert_alpha()
         # self.image = pygame.Surface((30, 50))
         # self.image.fill(color)
 
@@ -53,6 +55,14 @@ class Player(pygame.sprite.Sprite):
         # Player inicialmente não está morto
         self.dead = False
 
+        # Player atingido por inimigo
+        self.damaged = False
+
+    def hit(self):
+        self.invincible = True
+        self.damaged = True
+        self.damage_alpha = chain(constants.DAMAGE_ALPHA * 3)
+
     def update(self, dt=0):
         # A velocidade sempre será 0 para mover apenas quando uma tecla for pressionada
         self.speedx = 0
@@ -74,10 +84,18 @@ class Player(pygame.sprite.Sprite):
 
         if self.timer > 0:
             self.timer = self.timer - dt
+        self.image = self.player_img.copy()
+        if self.damaged:
+            try:
+                self.image.fill((255, 0, 0, next(self.damage_alpha)), special_flags=pygame.BLEND_RGBA_MULT)
+
+            except:
+                self.invincible = False
+                self.damaged = False
 
         # Se o player estiver invencível há um segundo, o player deixar de ser invencivel
-        if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
-            self.invincible = False
+        #if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
+        #   self.invincible = False
 
         # Blit do player
         self.game.window.blit(self.image, self.coordenadas())

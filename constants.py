@@ -5,3 +5,5 @@ DISPLAY_HEIGHT = 684
 GAME_CAPTION = "Castle"
 HUNGER_LIVES_X = 770
 LIVES_Y = 150
+
+DAMAGE_ALPHA = [i for i in range(0, 255, 50)]
