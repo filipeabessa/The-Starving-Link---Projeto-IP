@@ -44,11 +44,11 @@ class Game:
         self.font_name = pygame.font.get_default_font()
 
         # Imagem do cenário do jogo
-        self.scenario_img = pygame.image.load("hirule.png")
+        self.scenario_img = pygame.image.load("hirule3.png")
 
         # Cria instâncias das classes
 
-        self.score = Score(self.window, 0, constants.DISPLAY_WIDTH - 20, 20)
+        self.score = Score(self.window, 0)
         self.hunger = Hunger(self.window)
         self.menu = Menu(self)
         self.game_over = Game_over(self)
@@ -62,22 +62,42 @@ class Game:
         self.enemies = [Enemy(700, 600, 5, self.window)]  # Lista de inimigos na tela
         self.food_list = []  # Lista de comidas na tela
 
-        #Contadores de itens pegos
+        # Contadores de itens pegos
         self.breads_caught = 100
         self.apples_caught = 100
         self.chickens_caught = 100
         self.game_score = 0
 
-        #Dicionario com os icones das comidas
-        self.food_images = { 
-            "apple": (pygame.image.load(path.join('', "Apple.png")).convert_alpha()),
-            "bread": (pygame.image.load(path.join('', "Bread.png")).convert_alpha()),
-            "chicken": (pygame.image.load(path.join('', "Chicken.png")).convert_alpha())
+        # Dicionario com os icones das comidas
+        self.food_images = {
+            "apple": (pygame.image.load(path.join("", "Apple.png")).convert_alpha()),
+            "bread": (pygame.image.load(path.join("", "Bread.png")).convert_alpha()),
+            "chicken": (
+                pygame.image.load(path.join("", "Chicken.png")).convert_alpha()
+            ),
         }
 
-        self.apples_count = Items_count(self.window, 0, 30, constants.DISPLAY_HEIGHT - 100, self.food_images["apple"])
-        self.breads_count = Items_count(self.window, 0, 30, constants.DISPLAY_HEIGHT - 65, self.food_images["bread"])
-        self.chickens_count = Items_count(self.window, 0, 30, constants.DISPLAY_HEIGHT - 30, self.food_images["chicken"])
+        self.apples_count = Items_count(
+            self.window,
+            0,
+            constants.APPLES_COUNT_POS_X,
+            constants.APPLES_COUNT_POS_Y,
+            self.food_images["apple"],
+        )
+        self.breads_count = Items_count(
+            self.window,
+            0,
+            constants.BREADS_COUNT_POS_X,
+            constants.BREADS_COUNT_POS_Y,
+            self.food_images["bread"],
+        )
+        self.chickens_count = Items_count(
+            self.window,
+            0,
+            constants.CHICKENS_COUNT_POS_X,
+            constants.CHICKENS_COUNT_POS_Y,
+            self.food_images["chicken"],
+        )
 
     # Método do loop do jogo. (Esse código antes ficava no projeto.py)
     def game_loop(self):
@@ -147,12 +167,10 @@ class Game:
             # Mostrar vidas na tela
             self.player.draw_lives(
                 self.window,
-                constants.HUNGER_LIVES_X,
-                constants.LIVES_Y,
                 self.player.lives,
                 self.player.lives_img,
             )
-            #Draw Items count
+            # Draw Items count
             self.apples_count.update(self.apples_caught)
             self.breads_count.update(self.breads_caught)
             self.chickens_count.update(self.chickens_caught)

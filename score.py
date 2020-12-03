@@ -1,12 +1,10 @@
 import pygame
+import constants
 
 
 class Score:
-    def __init__(self, surface, score, x, y):
+    def __init__(self, surface, score):
         # --Class Attributes--
-        # Score position
-        self.x = x
-        self.y = y
 
         # Score value
         self.score_str = str(score)
@@ -26,7 +24,7 @@ class Score:
         text_surface = font.render(self.score_str, True, (255, 255, 255))
 
         text_rect = text_surface.get_rect()
-        text_rect.midtop = (self.x, self.y)
+        text_rect.midtop = (constants.SCORE_POS_X, constants.SCORE_POS_Y)
 
         self.surface.blit(text_surface, text_rect)
 

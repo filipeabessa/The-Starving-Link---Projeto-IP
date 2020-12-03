@@ -61,13 +61,17 @@ class Player(pygame.sprite.Sprite):
         keystate = pygame.key.get_pressed()
         # Condicionais para mover o player de acordo com a tecla pressionada
         if keystate[pygame.K_a]:
-            self.speedx = -7
+            if self.rect.x > constants.SCENARIO_WALKING_LIMIT_LEFT:
+                self.speedx = -7
         if keystate[pygame.K_d]:
-            self.speedx = 7
+            if self.rect.x < constants.SCENARIO_WALKING_LIMIT_RIGHT:
+                self.speedx = 7
         if keystate[pygame.K_w]:
-            self.speedy = -7
+            if self.rect.y > constants.SCENARIO_WALKING_LIMIT_TOP:
+                self.speedy = -7
         if keystate[pygame.K_s]:
-            self.speedy = 7
+            if self.rect.y < constants.SCENARIO_WALKING_LIMIT_DOWN:
+                self.speedy = 7
         # Mover o rect de acordo com a velocidade
         self.rect.x += self.speedx
         self.rect.y += self.speedy
@@ -82,12 +86,12 @@ class Player(pygame.sprite.Sprite):
         # Blit do player
         self.game.window.blit(self.image, self.coordenadas())
 
-    def draw_lives(self, screen, x, y, lives, img):
+    def draw_lives(self, screen, lives, img):
         # Desenha vidas na tela
         for i in range(lives):
             img_rect = img.get_rect()
-            img_rect.x = x
-            img_rect.y = y + 30 * i
+            img_rect.x = constants.LIVES_POS_X
+            img_rect.y = constants.LIVES_POS_Y + 30 * i
             screen.blit(img, img_rect)
 
     # Remove a vida em 1 quando o método é chamado. Se a quantidade de vidas vai de 1 para 0, o player morre

@@ -1,15 +1,10 @@
 import pygame
+import constants
 
 
 class Hunger:
     """Classe para gerenciar a fome do player. Para usar-la é necessário criar e guarda um objeto
     da classe quando o jogo começar e chamar a função \'update\' no loop principal do jogo"""
-
-    # Variáveis para que a barra que será mostrada na UI
-    BAR_POS_X = 770
-    BAR_POS_Y = 350
-    BAR_WIDDTH = 20
-    BAR_HEIGHT = 200
 
     def __init__(self, screen, curr_hungry=100, starve_time=20):
         """Construtor da classe, recebe como parâmetros a tela do jogo o valor atual da fome, o
@@ -48,23 +43,26 @@ class Hunger:
 
     def show_hunger_bar(self):
         """Plota a barra de fome na tela com a fome atual"""
-        modifier = self.BAR_HEIGHT - self.BAR_HEIGHT * self.curr_hungry / 100  #
+        modifier = (
+            constants.HUNGER_BAR_HEIGHT
+            - constants.HUNGER_BAR_HEIGHT * self.curr_hungry / 100
+        )  #
         pygame.draw.rect(self.screen, (75, 50, 50), self._get_bar_rect())  # background
         pygame.draw.rect(
             self.screen, (0, 250, 0), self._get_bar_rect(modifier)
         )  # barra
         pygame.draw.rect(self.screen, (150, 75, 0), self._get_bar_rect(), 1)  # bordas
-        #pygame.display.flip()  # Mostra as barras na tela
+        # pygame.display.flip()  # Mostra as barras na tela
 
     @classmethod  # Método estático
     def _get_bar_rect(cls, y_modifier=0):
         """Retorna o rect padrão da barra, caso nada seja passado como parâmetro, ou uma barra
         reduzida em y_modifier unidades no eixo y caso algum parametro seja passado"""
         return pygame.Rect(
-            cls.BAR_POS_X,
-            cls.BAR_POS_Y + y_modifier,
-            cls.BAR_WIDDTH,
-            cls.BAR_HEIGHT - y_modifier,
+            constants.HUNGER_BAR_POS_X,
+            constants.HUNGER_BAR_POS_Y + y_modifier,
+            constants.HUNGER_BAR_WIDDTH,
+            constants.HUNGER_BAR_HEIGHT - y_modifier,
         )
 
     def update(self, delta_time):
