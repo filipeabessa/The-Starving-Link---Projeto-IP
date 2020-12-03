@@ -3,6 +3,7 @@ from math import sqrt
 from os import path
 import pygame
 from pygame.sprite import Sprite
+import Classe_player
 
 
 class Enemy(Sprite):
@@ -21,19 +22,15 @@ class Enemy(Sprite):
         self._speed = speed  # A velocidade com o qual o inimigo se movimenta
         self._screen = screen  # A tela do jogo
 
-        self._rect = (
+        self.rect = (
             self._sprite.get_rect()
         )  # O Rect usado para a colisão e movimentação
-        self._rect.x = x_pos
-        self._rect.y = y_pos
+        self.rect.x = x_pos
+        self.rect.y = y_pos
 
         self._previous_pos = x_pos, y_pos  # Variável usada para facilitar o colisões
         self._is_dead = False  # Guarda se o inimigo ainda está vivo
 
-    @property
-    def rect(self):
-        """O retângulo que representa o inimigo"""
-        return self._rect
 
     @property
     def pos(self):
@@ -53,23 +50,23 @@ class Enemy(Sprite):
 
     def _move(self, obstacles):
         """Movimenta o inimigo de acordo com sua direção e lidando com colisões"""
-        self._previous_pos = self._rect.x, self._rect.y  # Guarda a posição atual
+        self._previous_pos = self.rect.x, self.rect.y  # Guarda a posição atual
 
         # Movimenta o inimgo pelo seu Rect, considerando sua direção e velocidade
         mov_vector = self._direction[0] * self._speed, self._direction[1] * self._speed
-        self._rect.move_ip(mov_vector)
+        self.rect.move_ip(mov_vector)
 
         # Desconsidera o objeto como obstáculo para que esse não colida com si mesmo
         obs = obstacles.copy()
-        if self._rect in obs:
-            obs.remove(self._rect)
+        if self.rect in obs:
+            obs.remove(self.rect)
 
         # Se colidir com algo no movimento, volta à posição anterior
-        if self._rect.collidelist(obs) != -1:
-            self._rect.x = self._previous_pos[0]
-            self._rect.y = self._previous_pos[1]
+        if self.rect.collidelist(obs) != -1:
+            self.rect.x = self._previous_pos[0]
+            self.rect.y = self._previous_pos[1]
 
-    def die(self):
+    def die(self, enemy_list):
         """Desabilita a função update e têm 30% de chance de dropar um item, sendo
         66% de chance de ser uma comida e 33% de ser um buff"""
         if self._is_dead:
@@ -77,6 +74,8 @@ class Enemy(Sprite):
 
         self._is_dead = True  # Marca o inimigo como morto
         rand = randint(1, 10)  # Gera um int aleatório entre 1 a 10
+        enemy_list.remove(self) # Remove o inimigo da lista para remover-lo do jogo
+
         # Se o num for 10, dropa um buff; se for 8 ou 9, dropa comida; senão, nada dropa
         if rand > 7:
             print(rand)
@@ -87,17 +86,25 @@ class Enemy(Sprite):
                 print("Comida")
                 # Food("",self.pos[0], self.pos[1], self._screen, True)
 
-    def update(self, player_pos: tuple, obstacles: list):
+    def update(self, player_pos: tuple, obstacles: list, enemy_list):
         """Se o inimigo estiver vivo, atualiza seu sprite na tela e o move em direção
-        ao player'. Recebe a posição do player e uma lista de óbstaculos."""
+        ao player'. Recebe a posição do player, uma lista de óbstaculos e a lista de
+        inimigos."""
+        
+        # Se o inimigo for atingido por uma bala, faça o inimigo morrer e destrua a bala
+        for arrow in Classe_player.bullets:
+            if self.rect.colliderect(arrow.rect):
+                arrow.kill()
+                self.die(enemy_list)
+
         if self._is_dead:  # Se não está morto, move e mostra o inimigo na tela
             return
 
         # Faz o inimigo se mover em direção ao player passando o vetor resultante
         # entre a diferença de suas posições
-        vector = player_pos[0] - self._rect.x, player_pos[1] - self._rect.y
+        vector = player_pos[0] - self.rect.x, player_pos[1] - self.rect.y
         self.change_dir(vector[0], vector[1])
         self._move(obstacles)
 
         # Atualiza o sprite do inimigo na tela
-        self._screen.blit(self._sprite, (self._rect.x, self._rect.y))
+        self._screen.blit(self._sprite, (self.rect.x, self.rect.y))
