@@ -138,8 +138,8 @@ class Game:
                         self.food_list.append(
                             Food.random_spawn(
                                 [],
-                                constants.DISPLAY_WIDTH,
-                                constants.DISPLAY_HEIGHT,
+                                constants.SCENARIO_WALKING_LIMIT_RIGHT,
+                                constants.SCENARIO_WALKING_LIMIT_DOWN,
                                 self.window,
                             )
                         )

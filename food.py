@@ -1,6 +1,7 @@
 from random import randint, choice
 from os import path
 import pygame
+import constants
 
 # Food dictionary with health points for the constructor
 # TODO: Edit food list with final values
@@ -22,7 +23,7 @@ food_list = {
 # Food class
 class Food:
 
-    SPAWN_DELAY = 20000  # Delay entre os spawns de comida
+    SPAWN_DELAY = 10000  # Delay entre os spawns de comida
     FOOD_SPAWN_EVENT = pygame.USEREVENT  # Evento para gerar a comida
 
     # Constructor
@@ -42,15 +43,15 @@ class Food:
         self.sprite = food_list[self._name]["sprite"].convert_alpha()
         self._caught = False
 
-        if x_pos >= 0:
+        if x_pos >= constants.SCENARIO_WALKING_LIMIT_LEFT:
             self._x_pos = x_pos
         else:
-            self._x_pos = 0
+            self._x_pos = constants.SCENARIO_WALKING_LIMIT_LEFT
 
-        if y_pos >= 0:
+        if y_pos >= constants.SCENARIO_WALKING_LIMIT_TOP + 20:
             self._y_pos = y_pos
         else:
-            self._y_pos = 0
+            self._y_pos = constants.SCENARIO_WALKING_LIMIT_TOP + 20
 
         self.screen = screen
 
