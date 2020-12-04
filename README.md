@@ -15,15 +15,15 @@ python main.py
 ```
 
 ### Controls
-ENTER = start the game
-SPACE = restart the game on Game Over
-
-W = move up
-S = move down
-A = move left
-D = move right
-
-keyboard arrows = shoot in the arrow direction
+ENTER = start the game  
+SPACE = restart the game on Game Over  
+  
+W = move up  
+S = move down  
+A = move left  
+D = move right  
+  
+keyboard arrows = shoot in the arrow direction    
 
 ## Disclaimer ❗
 This project was created for non-commercial learning purposes and the rights of The Legend of Zelda franchise as well as most of the sprites used in the game belong to Nintendo.
