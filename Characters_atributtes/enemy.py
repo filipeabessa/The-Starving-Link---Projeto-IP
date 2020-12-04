@@ -78,13 +78,7 @@ class Enemy(Sprite):
 
         # Se o num for 10, dropa um buff; se for 8 ou 9, dropa comida; senão, nada dropa
         if rand > 7:
-            print(rand)
-            if rand == 10:
-                print("Buff")
-                # TODO: dropa um buff
-            else:
-                print("Comida")
-                food_list.append(Food("", self.pos[0], self.pos[1], self._screen, True))
+            food_list.append(Food("", self.pos[0], self.pos[1], self._screen, True))
         self.score.increase_score()
 
     def update(self, player_pos: tuple, obstacles: list, enemy_list, food_list):
