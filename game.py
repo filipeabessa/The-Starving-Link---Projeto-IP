@@ -206,8 +206,8 @@ class Game:
 
             player_class.all_sprites.update()
             # Atualiza a imagem de todas as comidas
-            for food in self.food_list:
-                food.update()
+            for single_food in self.food_list:
+                single_food.update()
             # Atualiza o inimigo
             for enemy in self.enemies:
                 enemy.update(
