@@ -50,4 +50,4 @@ ENEMY_2_POS = (97, 363)
 ENEMY_3_POS = (368, 84)
 ENEMY_4_POS = (375, 637)
 
-DAMAGE_ALPHA = [i for i in range(0, 255, 50)]
+DAMAGE_ALPHA = [i for i in range(0, 255, 20)]

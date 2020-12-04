@@ -135,10 +135,11 @@ class Player(pygame.sprite.Sprite):
         # Blit do player
         self.game.window.blit(self.image, self.coordenadas())
 
-        self.animate(self.n)
+        self.image = self.player_img.copy() 
+        
         if self.damaged:
             try:
-                self.image.fill((255, 0, 0, next(self.damage_alpha)), special_flags=pygame.BLEND_RGBA_MULT)
+                self.image.fill((255, 255, 0, next(self.damage_alpha)), special_flags=pygame.BLEND_RGBA_MULT)
             except:
                 self.invincible = False
                 self.damaged = False
@@ -176,6 +177,7 @@ class Player(pygame.sprite.Sprite):
                 self.current_frame = n * 8 + ((self.current_frame + 1) % 8)
                 # Escolhe a imagem a ser mostrada com base na posição e no frame determinados
                 self.image = self.list_images[self.current_frame]
+                self.player_img = self.image.copy()
 
     def draw_lives(self, screen, lives, img):
         # Desenha vidas na tela

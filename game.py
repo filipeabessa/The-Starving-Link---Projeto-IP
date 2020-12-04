@@ -71,8 +71,6 @@ class Game:
         )
 
         self.enemies = []  # Lista de inimigos na tela
-        self.enemies_group = pygame.sprite.Group()
-        self.set_enemies_group()
         self.food_list = []  # Lista de comidas na tela
 
         # Contadores de itens pegos
@@ -249,15 +247,13 @@ class Game:
                     self.game_over.run_display = False
                     self.food_list.clear()
                     self.enemies.clear()
+                    self.player.damaged = False
+                    self.player.invincible = False
 
                     self.player.player_rect.centerx = constants.DISPLAY_WIDTH / 2
                     self.player.player_rect.bottom = constants.DISPLAY_HEIGHT / 2
 
                     # TODO fazer os inimigos sumirem da tela
-
-    def set_enemies_group(self):
-            for enemy in self.enemies:
-                self.enemies_group.add(enemy)
 
     def check_colission(self):
         for enemy in self.enemies:
