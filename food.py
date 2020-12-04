@@ -7,15 +7,15 @@ import constants
 # TODO: Edit food list with final values
 food_list = {
     "apple": {
-        "points": 40,
+        "points": 5,
         "sprite": (pygame.image.load(path.join("", "./Images/Apple.png"))),
     },
     "bread": {
-        "points": 60,
+        "points": 20,
         "sprite": (pygame.image.load(path.join("", "./Images/Bread.png"))),
     },
     "chicken": {
-        "points": 80,
+        "points": 40,
         "sprite": (pygame.image.load(path.join("", "./Images/Chicken.png"))),
     },
 }
@@ -23,7 +23,7 @@ food_list = {
 # Food class
 class Food:
 
-    SPAWN_DELAY = 10000  # Delay entre os spawns de comida
+    SPAWN_DELAY = 20000  # Delay entre os spawns de comida
     FOOD_SPAWN_EVENT = pygame.USEREVENT  # Evento para gerar a comida
 
     # Constructor
