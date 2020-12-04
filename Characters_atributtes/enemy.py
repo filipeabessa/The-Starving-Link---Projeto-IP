@@ -1,9 +1,9 @@
-import pygame
-from random import randint
 from math import sqrt
-from Objectives import food
+from random import randint
+import pygame
 from pygame.sprite import Sprite
-from Characters_atributtes import Classe_player
+from Objectives import food
+from Characters_atributtes import player_class
 
 
 class Enemy(Sprite):
@@ -94,12 +94,13 @@ class Enemy(Sprite):
         inimigos."""
 
         # Se o inimigo for atingido por uma bala, faça o inimigo morrer e destrua a bala
-        for arrow in Classe_player.bullets:
+        for arrow in player_class.bullets:
             if self.rect.colliderect(arrow.rect):
                 arrow.kill()
                 self.die(enemy_list, food_list)
 
-        if self._is_dead:  # Se não está morto, move e mostra o inimigo na tela
+        if self._is_dead:
+            # Se não está morto, move e mostra o inimigo na tela
             return
 
         # Faz o inimigo se mover em direção ao player passando o vetor resultante

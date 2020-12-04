@@ -1,7 +1,7 @@
-import pygame
-from Characters_atributtes import projectile
-from math import sqrt
 from itertools import chain
+from math import sqrt
+import pygame
+from Characters_atributtes import arrow_projectile
 import constants
 
 all_sprites = pygame.sprite.Group()
@@ -29,7 +29,9 @@ class Player(pygame.sprite.Sprite):
             0  # Marca o frame atual, para que seja possível saber qual posição usar
         )
         self.walking = False  # Booleano para saber se o player está se movimentando
-        self.n = 0  # Atributo que vai ser usado na escolha da imagem mostrada
+        self.chosen_player_img = (
+            0  # Atributo que vai ser usado na escolha da imagem mostrada
+        )
 
         # Cria um Rect com as dimensões do bloco do Player
         self.image = self.list_images[0]
@@ -91,7 +93,7 @@ class Player(pygame.sprite.Sprite):
         self.damaged = True
         self.damage_alpha = chain(constants.DAMAGE_ALPHA * 4)
 
-    def update(self, food_list, game, dt=0):
+    def update(self, food_list, game, delta_time=0):
         # Para funcionar do jeito certo, o update precisa mudar o atributo de andar para false,
         # de modo que seja possível chamar a função para mudar as imagens várias vezes
         self.walking = False
@@ -107,7 +109,7 @@ class Player(pygame.sprite.Sprite):
                     self.speedx = -7
                     self.walking = True
                     # Só vai ser true se o player estiver andando (em qualquer direção)
-                    self.n = 2
+                    self.chosen_player_img = 2
             # O valor para achar o frame correto dessa imagem é 2
             # Ele tem o mesmo significado nas outras condicionais
         if keystate[pygame.K_d]:
@@ -115,7 +117,7 @@ class Player(pygame.sprite.Sprite):
                 if not self.player_rect.colliderect(self.scenario.statue_right):
                     self.speedx = 7
                     self.walking = True
-                    self.n = 0
+                    self.chosen_player_img = 0
         if keystate[pygame.K_w]:
             if self.player_rect.y > constants.SCENARIO_WALKING_LIMIT_TOP:
                 if (not self.player_rect.colliderect(self.scenario.statue_left)) and (
@@ -123,14 +125,15 @@ class Player(pygame.sprite.Sprite):
                 ):
                     self.speedy = -7
                     self.walking = True
-                    self.n = 3
+                    self.chosen_player_img = 3
         if keystate[pygame.K_s]:
             if self.player_rect.y < constants.SCENARIO_WALKING_LIMIT_DOWN:
                 self.speedy = 7
                 self.walking = True
-                self.n = 1
-        # Chama o método animate() passando como parâmetro o self.n, para poder achar o frame correto
-        self.animate(self.n)
+                self.chosen_player_img = 1
+        # Chama o método animate() passando como parâmetro o
+        # self.chosen_player_img, para poder achar o frame correto
+        self.animate(self.chosen_player_img)
 
         # Normalização da velocidade
         magnitude = (self.speedx ** 2 + self.speedy ** 2) ** 0.5
@@ -144,7 +147,7 @@ class Player(pygame.sprite.Sprite):
         self.player_rect.y += speed_vec[1]
 
         if self.timer > 0:
-            self.timer = self.timer - dt
+            self.timer = self.timer - delta_time
 
         for food in food_list:
             if food.rect.colliderect(self.player_rect):
@@ -186,13 +189,13 @@ class Player(pygame.sprite.Sprite):
 
     # Define método para fazer uma lista de imagens a partir de uma imagem passada como atributo
     # em self.game.spritesheet
-    def make_image_list(self, number_positions, im_width, im_height):
+    def make_image_list(self, number_positions, image_width, image_height):
         image_list = []
         # Loop for que itera x vezes, onde x é o número de imagens que forem passadas
-        for n in range(number_positions):
+        for image_number in range(number_positions):
             # Chama o método get_image() da classe Spritesheet, o qual retorna uma imagem por vez
             position = self.game.spritesheet.get_image(
-                n * im_width, 0, im_width, im_height
+                image_number * image_width, 0, image_width, image_height
             )
             image_list.append(position)
         return image_list
@@ -209,11 +212,12 @@ class Player(pygame.sprite.Sprite):
                 self.last_update = (
                     now  # Armazena o tempo em que a função está sendo chamada
                 )
-                # ((self.current_frame+1)%8) vai resultar em um número de 0 a 8, já que cada posição
-                # do Link (cima, baixo, direita e esquerda) tem 8 imagens. n*8 vai usar o n passado em
-                # update para "escolher" a posição a ser mostrada (cima é 3, baixo é 1, direita é 0 e
-                # esquerda é 2). Isso dá os números múltiplos de 8 até 24, que, somados ao outro número,
-                # resultam em todos os números de 0 a 31
+                # ((self.current_frame+1)%8) vai resultar em um número de 0 a 8,
+                # já que cada posição do Link (cima, baixo, direita e esquerda)
+                # tem 8 imagens. n*8 vai usar o n passado em update para "escolher"
+                # a posição a ser mostrada (cima é 3, baixo é 1, direita é 0 e
+                # esquerda é 2). Isso dá os números múltiplos de 8 até 24, que,
+                # somados ao outro número, # resultam em todos os números de 0 a 31
                 self.current_frame = n * 8 + ((self.current_frame + 1) % 8)
                 # Escolhe a imagem a ser mostrada com base na posição e no frame determinados
                 self.image = self.list_images[self.current_frame]
@@ -233,7 +237,8 @@ class Player(pygame.sprite.Sprite):
             img_rect.y = constants.LIVES_POS_Y + 30 * (i + lives)
             screen.blit(self.lives_empty_img, img_rect)
 
-    # Remove a vida em 1 quando o método é chamado. Se a quantidade de vidas vai de 1 para 0, o player morre
+    # Remove a vida em 1 quando o método é chamado.
+    # Se a quantidade de vidas vai de 1 para 0, o player morre
     def lose_life(self):
         self.lose_life_sound.play()
         self.lives = self.lives - 1
@@ -253,7 +258,7 @@ class Player(pygame.sprite.Sprite):
 
     # Se a fome chegar em 0, o player morre
     def check_hunger(self):
-        if self.hunger._curr_hungry == 0:
+        if self.hunger.curr_hungry == 0:
             self.player_died()
 
     # Se a quantidade de vidas chegar em 0, o player morre
@@ -264,7 +269,7 @@ class Player(pygame.sprite.Sprite):
     # Função faz o jogador morrer e muda valores dos booleanos para que a tela de game over apareça
     def player_died(self):
         pygame.mixer.music.stop()
-        music = pygame.mixer.music.load("./Sounds/the_giants_theme.ogg")
+        pygame.mixer.music.load("./Sounds/the_giants_theme.ogg")
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.5)
 
@@ -295,7 +300,8 @@ class Player(pygame.sprite.Sprite):
             self.arrow_shot_sound.set_volume(0.6)
             self.arrow_shot_sound.play()
             direction[1] = -1  # Muda o valor do vetor direção no eixo y
-            imagem = "./Images/Arrow_up.png"  # Escolhe a imagem a ser mostrada (válido para os outros if's)
+            imagem = "./Images/Arrow_up.png"
+            # Escolhe a imagem a ser mostrada (válido para os outros if's)
             pos_x = (
                 self.player_rect.centerx
             )  # Define a posição da flecha se atirada para cima
@@ -336,11 +342,12 @@ class Player(pygame.sprite.Sprite):
                 self.player_rect.bottom
             )  # Define a posição da flecha se atirada para baixo
 
-        # Só permite atirar se o vetor for diferente de [0, 0], ou seja, se alguma seta for pressionada
+        # Só permite atirar se o vetor for diferente de [0, 0],
+        # ou seja, se alguma seta for pressionada
         if direction != [0, 0]:
             magnitude = sqrt(direction[0] ** 2 + direction[1] ** 2)
             # Cria a classe da flecha
-            bullet = projectile.Bullets(
+            bullet = arrow_projectile.Bullets(
                 pos_x,
                 pos_y,
                 (direction[0] * speed) / magnitude,

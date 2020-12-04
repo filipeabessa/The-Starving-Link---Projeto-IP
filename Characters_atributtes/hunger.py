@@ -12,7 +12,7 @@ class Hunger:
         self._max_hungry = (
             100  # O limite do valor da fome é 100 para facilitar os cálculos
         )
-        self._curr_hungry = curr_hungry  # Valor da fome atual
+        self.curr_hungry = curr_hungry  # Valor da fome atual
         self._hungry_decay = (
             self._max_hungry / starve_time
         )  # Quanto de fome decai a cada segundo
@@ -21,29 +21,28 @@ class Hunger:
         self.eating_sound = pygame.mixer.Sound("./Sounds/eating.wav")
 
     @property
-    def curr_hungry(self):  # Getter do curr_hungry
+    def change_curr_hungry(self):  # Getter do curr_hungry
         """O valor atual da fome do player"""
-        return self._curr_hungry
+        return self.curr_hungry
 
     def feed(self, value: float):
         self.eating_sound.set_volume(0.6)
         self.eating_sound.play()
-        """Soma o valor atual da fome com o parâmetro, respeitando o valor máximo que
-        esse pode chegar"""
+        # Soma o valor atual da fome com o parâmetro, respeitando o valor máximo que
+        # esse pode chegar
         if (
-            self._curr_hungry + value < self._max_hungry
+            self.curr_hungry + value < self._max_hungry
         ):  # Se a soma for menor que o máximo, faça-a
-            self._curr_hungry += value
+            self.curr_hungry += value
         else:  # Se a soma for maior que o máximo, usa-se o valor máximo da barra para _curr_hungry
-            self._curr_hungry = self._max_hungry
+            self.curr_hungry = self._max_hungry
 
     def decay(self, value: float):
         """Decaí o valor atual da fome, chamando o game over caso essa chegue a 0"""
-        if self._curr_hungry - value > 0:  # Se a subtração for maior que zero, faça-a
-            self._curr_hungry -= value
+        if self.curr_hungry - value > 0:  # Se a subtração for maior que zero, faça-a
+            self.curr_hungry -= value
         else:  # Se a fome chegar a zero ou menos, chama o game over
-            self._curr_hungry = 0
-            # TODO: call player Game Over
+            self.curr_hungry = 0
 
     def show_hunger_bar(self):
         """Plota a barra de fome na tela com a fome atual"""

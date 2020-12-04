@@ -1,17 +1,8 @@
-import pygame
-from Screen_related import menu
-from Characters_atributtes import hunger
-from Characters_atributtes import (
-    Classe_player,
-)  # DONE       #Player, all_sprites, bullets
-from Characters_atributtes import spritesheet  # DONE
-from Objectives import score
-from Objectives import food
-from Screen_related import game_over
-from Objectives import items_count
 from os import path
-from Screen_related import scenario
-from Characters_atributtes import enemy_spawner
+import pygame
+from Characters_atributtes import enemy_spawner, hunger, player_class, sprite_sheet
+from Objectives import score, food, items_count
+from Screen_related import game_over, menu, scenario
 import constants
 
 
@@ -53,8 +44,8 @@ class Game:
         self.menu = menu.Menu(self)
         self.game_over = game_over.Game_over(self)
         self.scenario = scenario.Scenario()
-        self.spritesheet = spritesheet.Spritesheet("./Images/positions_link.gif")
-        self.player = Classe_player.Player(
+        self.spritesheet = sprite_sheet.Spritesheet("./Images/positions_link.gif")
+        self.player = player_class.Player(
             self.hunger, self, self.game_over, self.scenario
         )
 
@@ -119,19 +110,20 @@ class Game:
         if self.menu.run_display:
             # Checa se o jogo foi fechado ou se o enter foi apertado
             self.check_events()
-            # Checa se o enter foi apertado no menu, e se sim, self.playing é setado pra True e self.menu.run_display é setado para false,
+            # Checa se o enter foi apertado no menu, e se sim, self.playing
+            # é setado pra True e self.menu.run_display é setado para false,
             # e assim o menu some da tela e o loop do jogo é iniciado
             self.menu.check_if_game_started()
         if self.playing:
-            music = pygame.mixer.music.load("./Sounds/dark_sarias_song.ogg")
+            pygame.mixer.music.load("./Sounds/dark_sarias_song.ogg")
             pygame.mixer.music.play(-1)
             food.Food.start_spawn()  # Inicia o spawn de comidas
             first_frame = True
             while not self.player.dead:
                 # Controla o delta_time
-                dt = self.clock.tick(40)
+                delta_time = self.clock.tick(40)
                 if first_frame:
-                    dt = 0
+                    delta_time = 0
                     first_frame = False
 
                 for event in pygame.event.get():
@@ -156,8 +148,8 @@ class Game:
                 self.player.shoot()
                 self.player.check_hunger()
                 self.player.check_lives()
-                self.display_game(dt)
-                self.enemy_spawners.update(dt, self.enemies, self.window)
+                self.display_game(delta_time)
+                self.enemy_spawners.update(delta_time, self.enemies, self.window)
 
     # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
@@ -173,19 +165,19 @@ class Game:
                     self.run_game_display = True
 
     # Escreve na tela
-    def draw_text(self, text, size, x, y, display, text_color, font):
+    def draw_text(self, text, size, pos_x, pos_y, display, text_color, font):
         font = pygame.font.Font(font, size)
         text_surface = font.render(text, True, text_color)
         text_rect = text_surface.get_rect()
-        text_rect.center = (x, y)
+        text_rect.center = (pos_x, pos_y)
         display.blit(text_surface, text_rect)
 
-    def display_game(self, dt):
+    def display_game(self, delta_time):
         if self.run_game_display:
             # Cenário mostrado na tela
             self.window.blit(self.scenario.scenario_img, (0, 0))
             # Player mostrado na tela
-            self.player.update(self.food_list, self, dt)
+            self.player.update(self.food_list, self, delta_time)
             # Score mostrado na tela
 
             # self.draw_text(
@@ -200,7 +192,7 @@ class Game:
 
             self.score.update()
             # Barra de fome mostrado na tela
-            self.hunger.update(dt)
+            self.hunger.update(delta_time)
             # Mostrar vidas na tela
             self.player.draw_lives(
                 self.window,
@@ -212,7 +204,7 @@ class Game:
             self.breads_count.update(self.breads_caught)
             self.chickens_count.update(self.chickens_caught)
 
-            Classe_player.all_sprites.update()
+            player_class.all_sprites.update()
             # Atualiza a imagem de todas as comidas
             for food in self.food_list:
                 food.update()
@@ -224,13 +216,13 @@ class Game:
                     self.enemies,
                     self.food_list,
                 )
-            Classe_player.all_sprites.draw(self.window)
+            player_class.all_sprites.draw(self.window)
             pygame.display.update()
 
-            for arrow in Classe_player.bullets:
-                s = pygame.Surface((arrow.rect.width, arrow.rect.height))
-                s.fill((255, 0, 0))
-                self.window.blit(s, (arrow.rect.x, arrow.rect.y))
+            for arrow in player_class.bullets:
+                bullets_surface = pygame.Surface((arrow.rect.width, arrow.rect.height))
+                bullets_surface.fill((255, 0, 0))
+                self.window.blit(bullets_surface, (arrow.rect.x, arrow.rect.y))
 
     def retry(self):
         for event in pygame.event.get():
@@ -241,7 +233,7 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.enemy_spawners.reset_timer()
-                    self.hunger._curr_hungry = 100
+                    self.hunger.curr_hungry = 100
                     self.player.lives = 5
                     self.breads_caught = 0
                     self.apples_caught = 0
@@ -259,8 +251,6 @@ class Game:
 
                     self.player.player_rect.centerx = constants.DISPLAY_WIDTH / 2
                     self.player.player_rect.bottom = constants.DISPLAY_HEIGHT / 2
-
-                    # TODO fazer os inimigos sumirem da tela
 
     def check_colission(self):
         for enemy in self.enemies:
