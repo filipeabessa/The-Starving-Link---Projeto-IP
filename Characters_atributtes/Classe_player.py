@@ -77,9 +77,10 @@ class Player(pygame.sprite.Sprite):
         self.gain_life_sound = pygame.mixer.Sound("./Sounds/heart_beat.wav")
 
         # Som ao perder vida
-        self.lose_life_sound = pygame.mixer.Sound("./Sounds/enemy_hit.wav")
+        self.lose_life_sound = pygame.mixer.Sound("./Sounds/stab.wav")
 
     def hit(self):
+        self.lose_life_sound.play()
         self.lives = self.lives - 1
         self.invincible = True
         self.damaged = True
