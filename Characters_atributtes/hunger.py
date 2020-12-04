@@ -18,12 +18,16 @@ class Hunger:
         )  # Quanto de fome decai a cada segundo
         self.screen = screen  # A tela do jogo
 
+        self.eating_sound = pygame.mixer.Sound("./Sounds/eating.wav")
+
     @property
     def curr_hungry(self):  # Getter do curr_hungry
         """O valor atual da fome do player"""
         return self._curr_hungry
 
     def feed(self, value: float):
+        self.eating_sound.set_volume(0.6)
+        self.eating_sound.play()
         """Soma o valor atual da fome com o parâmetro, respeitando o valor máximo que
         esse pode chegar"""
         if (
