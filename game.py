@@ -183,7 +183,7 @@ class Game:
             # Cenário mostrado na tela
             self.window.blit(self.scenario.scenario_img, (0, 0))
             # Player mostrado na tela
-            self.player.update(self.food_list,self,dt)
+            self.player.update(self.food_list, self, dt)
             # Score mostrado na tela
 
             # self.draw_text(
@@ -253,6 +253,7 @@ class Game:
                     self.enemies.clear()
                     self.player.damaged = False
                     self.player.invincible = False
+                    self.score.score = 0
 
                     self.player.player_rect.centerx = constants.DISPLAY_WIDTH / 2
                     self.player.player_rect.bottom = constants.DISPLAY_HEIGHT / 2
@@ -265,7 +266,5 @@ class Game:
                 if not self.player.invincible:
                     self.player.hit()
                     self.player.draw_lives(
-                        self.window,
-                        self.player.lives,
-                        self.player.lives_img
+                        self.window, self.player.lives, self.player.lives_img
                     )
