@@ -5,7 +5,7 @@ import pygame
 pygame.init()
 
 game = Game()
-
+pygame.mixer.music.set_volume(0.2)
 music = pygame.mixer.music.load("./Sounds/song_of_time.ogg")
 pygame.mixer.music.play(-1)
 while game.running:

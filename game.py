@@ -274,7 +274,6 @@ class Game:
                     )
 
     def check_score(self):
-        if self.score.score == (10*(1+self.vidas_ganhas)):
-            print("ganhou vida")
+        if self.score.score == (10 * (1 + self.vidas_ganhas)):
             self.vidas_ganhas += 1
             self.player.gain_life()

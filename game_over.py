@@ -37,6 +37,15 @@ class Game_over:
                 constants.RED,
                 self.font_retry,
             )
+            self.game.draw_text(
+                f"Score: {self.game.score.score}",
+                40,
+                constants.DISPLAY_WIDTH / 2,
+                constants.DISPLAY_HEIGHT / 2 + 30,
+                self.game.window,
+                constants.RED,
+                self.font_game_over,
+            )
             pygame.display.update()
 
     def game_over(self):
