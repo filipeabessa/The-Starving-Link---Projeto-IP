@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.damaged = True
         self.damage_alpha = chain(constants.DAMAGE_ALPHA * 4)
 
-    def update(self, dt=0):
+    def update(self, food_list, game,dt=0):
         # Para funcionar do jeito certo, o update precisa mudar o atributo de andar para false,
         # de modo que seja possível chamar a função para mudar as imagens várias vezes
         self.walking = False
@@ -127,6 +127,23 @@ class Player(pygame.sprite.Sprite):
 
         if self.timer > 0:
             self.timer = self.timer - dt
+
+        for food in food_list:
+            if food.rect.colliderect(self.player_rect):
+                if food.name == "apple":
+                    game.apples_caught += 1
+                if food.name == "bread":
+                    game.breads_caught += 1
+                if food.name == "chicken":
+                    game.chickens_caught += 1
+
+                self.hunger.feed(food.points)
+                food_list.remove(food)
+
+
+        # self.breads_caught = 0
+        # self.apples_caught = 0
+        # self.chickens_caught = 0
 
         # Se o player estiver invencível há um segundo, o player deixar de ser invencivel
         #if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
