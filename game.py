@@ -74,9 +74,9 @@ class Game:
         self.food_list = []  # Lista de comidas na tela
 
         # Contadores de itens pegos
-        self.breads_caught = 100
-        self.apples_caught = 100
-        self.chickens_caught = 100
+        self.breads_caught = 0
+        self.apples_caught = 0
+        self.chickens_caught = 0
         self.game_score = 0
 
         # Dicionario com os icones das comidas
@@ -183,7 +183,7 @@ class Game:
             # Cenário mostrado na tela
             self.window.blit(self.scenario.scenario_img, (0, 0))
             # Player mostrado na tela
-            self.player.update(dt)
+            self.player.update(self.food_list,self,dt)
             # Score mostrado na tela
 
             # self.draw_text(
@@ -241,6 +241,10 @@ class Game:
                     self.enemy_spawners.reset_timer()
                     self.hunger._curr_hungry = 100
                     self.player.lives = 5
+                    self.breads_caught = 0
+                    self.apples_caught = 0
+                    self.chickens_caught = 0
+                    self.game_score = 0
                     self.player.dead = False
                     self.playing = True
                     self.run_game_display = True

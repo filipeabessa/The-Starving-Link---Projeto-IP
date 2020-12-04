@@ -53,6 +53,11 @@ class Food:
         else:
             self._y_pos = constants.SCENARIO_WALKING_LIMIT_TOP + 20
 
+        #Cria o rect da comida
+        self._rect = self.sprite.get_rect()
+        self._rect.x = self._x_pos
+        self._rect.y = self._y_pos
+
         self.screen = screen
 
     @classmethod
@@ -80,6 +85,10 @@ class Food:
     @property
     def y_pos(self):
         return self._y_pos
+
+    @property
+    def rect(self):
+        return self._rect
 
     def get_coords(self):
         return self.x_pos, self.y_pos
