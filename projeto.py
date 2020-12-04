@@ -6,6 +6,8 @@ pygame.init()
 
 game = Game()
 
+music = pygame.mixer.music.load("./Sounds/song_of_time.ogg")
+pygame.mixer.music.play(-1)
 while game.running:
     game.menu.display_menu()
     game.game_loop()

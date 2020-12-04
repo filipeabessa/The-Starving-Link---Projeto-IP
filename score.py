@@ -14,7 +14,7 @@ class Score:
         self.surface = surface
 
         # Fonte do score
-        self.font = pygame.font.match_font("arial")
+        self.font = "./Fonts/Triforce.ttf"
 
     def increase_score(self):
         self.score += 1
@@ -23,7 +23,7 @@ class Score:
         self.score_str = str(self.score)
         self.game.draw_text(
             f"Score: {self.score_str} ",
-            20,
+            25,
             constants.SCORE_POS_X,
             constants.SCORE_POS_Y,
             self.game.window,

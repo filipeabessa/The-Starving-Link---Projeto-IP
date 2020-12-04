@@ -69,6 +69,9 @@ class Player(pygame.sprite.Sprite):
         # Player atingido por inimigo
         self.damaged = False
 
+        # Som ao atirar flecha
+        self.arrow_shot_sound = pygame.mixer.Sound("./Sounds/arrow_shot.wav")
+
     def hit(self):
         self.lives = self.lives - 1
         self.invincible = True
@@ -154,14 +157,16 @@ class Player(pygame.sprite.Sprite):
         self.image = self.player_img.copy()
 
         if self.damaged:
-            try:
-                self.image.fill(
-                    (255, 255, 0, next(self.damage_alpha)),
-                    special_flags=pygame.BLEND_RGBA_MULT,
-                )
-            except:
-                self.invincible = False
-                self.damaged = False
+            if self.speedx != 0 or self.speedy != 0:
+                try:
+                    self.image.fill(
+                        (0, 0, 0, next(self.damage_alpha)),
+                        special_flags=pygame.BLEND_RGBA_MULT,
+                    )
+
+                except:
+                    self.invincible = False
+                    self.damaged = False
 
     # Define método para fazer uma lista de imagens a partir de uma imagem passada como atributo
     # em self.game.spritesheet
@@ -234,6 +239,11 @@ class Player(pygame.sprite.Sprite):
 
     # Função faz o jogador morrer e muda valores dos booleanos para que a tela de game over apareça
     def player_died(self):
+        pygame.mixer.music.stop()
+        music = pygame.mixer.music.load("./Sounds/the_giants_theme.ogg")
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.5)
+
         self.dead = True
         self.game.playing = False
         self.game.run_game_display = False
@@ -258,6 +268,8 @@ class Player(pygame.sprite.Sprite):
         pos_y = 0  # Posição no eixo y de onde a flecha vai sair
         # Condicionais para verificar se as setas direcionais estão pressionadas
         if keystate[pygame.K_UP]:
+            self.arrow_shot_sound.set_volume(0.6)
+            self.arrow_shot_sound.play()
             direction[1] = -1  # Muda o valor do vetor direção no eixo y
             imagem = "./Images/Arrow_up.png"  # Escolhe a imagem a ser mostrada (válido para os outros if's)
             pos_x = (
@@ -267,6 +279,8 @@ class Player(pygame.sprite.Sprite):
                 self.player_rect.top
             )  # Define a posição da flecha se atirada para cima
         if keystate[pygame.K_RIGHT]:
+            self.arrow_shot_sound.set_volume(0.6)
+            self.arrow_shot_sound.play()
             direction[0] = 1
             imagem = "./Images/Arrow_right.png"
             pos_x = (
@@ -276,6 +290,8 @@ class Player(pygame.sprite.Sprite):
                 self.player_rect.centery
             )  # Define a posição da flecha se atirada para a direita
         if keystate[pygame.K_LEFT]:
+            self.arrow_shot_sound.set_volume(0.6)
+            self.arrow_shot_sound.play()
             direction[0] = -1
             imagem = "./Images/Arrow_left.png"
             pos_x = (
@@ -285,6 +301,8 @@ class Player(pygame.sprite.Sprite):
                 self.player_rect.centery
             )  # Define a posição da flecha se atirada para a esquerda
         if keystate[pygame.K_DOWN]:
+            self.arrow_shot_sound.set_volume(0.6)
+            self.arrow_shot_sound.play()
             direction[1] = 1
             imagem = "./Images/Arrow_down.png"
             pos_x = (

@@ -116,7 +116,6 @@ class Game:
 
     # Método do loop do jogo. (Esse código antes ficava no projeto.py)
     def game_loop(self):
-
         if self.menu.run_display:
             # Checa se o jogo foi fechado ou se o enter foi apertado
             self.check_events()
@@ -124,6 +123,8 @@ class Game:
             # e assim o menu some da tela e o loop do jogo é iniciado
             self.menu.check_if_game_started()
         if self.playing:
+            music = pygame.mixer.music.load("./Sounds/dark_sarias_song.ogg")
+            pygame.mixer.music.play(-1)
             Food.start_spawn()  # Inicia o spawn de comidas
             first_frame = True
             while not self.player.dead:

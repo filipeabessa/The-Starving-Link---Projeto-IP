@@ -49,7 +49,7 @@ class Hunger:
         )  #
         pygame.draw.rect(self.screen, (75, 50, 50), self._get_bar_rect())  # background
         pygame.draw.rect(
-            self.screen, (0, 250, 0), self._get_bar_rect(modifier)
+            self.screen, (234, 80, 18), self._get_bar_rect(modifier)
         )  # barra
         pygame.draw.rect(self.screen, (150, 75, 0), self._get_bar_rect(), 1)  # bordas
         # pygame.display.flip()  # Mostra as barras na tela

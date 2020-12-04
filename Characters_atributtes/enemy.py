@@ -22,6 +22,9 @@ class Enemy(Sprite):
         self._speed = speed  # A velocidade com o qual o inimigo se movimenta
         self._screen = screen  # A tela do jogo
 
+        # Som da flecha batendo no inimigo
+        self.hit_sound = pygame.mixer.Sound("./Sounds/enemy_hit.wav")
+
         self.rect = (
             self._sprite.get_rect()
         )  # O Rect usado para a colisão e movimentação
@@ -67,6 +70,10 @@ class Enemy(Sprite):
             self.rect.y = self._previous_pos[1]
 
     def die(self, enemy_list, food_list):
+
+        # Arrow hit sound
+        self.hit_sound.set_volume(0.6)
+        self.hit_sound.play()
         """Desabilita a função update e têm 30% de chance de dropar um item, sendo
         66% de chance de ser uma comida e 33% de ser um buff"""
         if self._is_dead:

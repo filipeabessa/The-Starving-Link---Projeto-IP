@@ -16,7 +16,11 @@ class Menu:
 
         self.menu_img = pygame.image.load("./Images/start_img.png")
 
-        self.font_zelda = "./Fonts/Ravenna.ttf"
+        self.font_start = "./Fonts/Ravenna.ttf"
+
+        self.font_the_legend_of = "./Fonts/CharlemagneBold.otf"
+
+        self.font_zelda = "./Fonts/Triforce.ttf"
 
     # Exibe o menu na tela
     def display_menu(self):
@@ -27,6 +31,34 @@ class Menu:
             # self.game.draw_text(
             #     "Main Menu", 30, constants.DISPLAY_WIDTH / 2, 50, self.menu_img
             # )
+
+            self.game.draw_text(
+                "THE LEGEND OF",
+                constants.MENU_THE_LEGEND_OF_FONT_SIZE,
+                constants.MENU_THE_LEGEND_OF_POS_X,
+                constants.MENU_THE_LEGEND_OF_POS_Y,
+                self.menu_img,
+                constants.RED,
+                self.font_the_legend_of,
+            )
+            self.game.draw_text(
+                "Zelda",
+                constants.MENU_ZELDA_FONT_SIZE,
+                constants.MENU_ZELDA_POS_X,
+                constants.MENU_ZELDA_POS_Y,
+                self.menu_img,
+                constants.RED,
+                self.font_zelda,
+            )
+            self.game.draw_text(
+                "The Starving Link",
+                constants.MENU_STARVING_FONT_SIZE,
+                constants.MENU_STARVING_POS_X,
+                constants.MENU_STARVING_POS_Y,
+                self.menu_img,
+                constants.RED,
+                self.font_the_legend_of,
+            )
             self.game.draw_text(
                 "START GAME",
                 50,
@@ -34,7 +66,7 @@ class Menu:
                 self.starty + 200,
                 self.menu_img,
                 constants.RED,
-                self.font_zelda,
+                self.font_start,
             )
             self.game.draw_text(
                 "Press ENTER",
@@ -43,7 +75,7 @@ class Menu:
                 self.starty + 250,
                 self.menu_img,
                 constants.RED,
-                self.font_zelda,
+                self.font_start,
             )
             pygame.display.update()
 

@@ -11,29 +11,31 @@ class Game_over:
         self.run_display = False
 
         self.game_over_img = pygame.image.load("./Images/game_over.png")
-        self.font_zelda = "./Fonts/Ravenna.ttf"
+        self.font_game_over = "./Fonts/Triforce.ttf"
+        self.font_retry = "./Fonts/Ravenna.ttf"
 
     # Exibe a tela de Game Over
     def display_game_over(self):
         if self.run_display:
-            self.game.window.blit(self.game_over_img, (0, 0))
+            self.game.window.fill(constants.BLACK)
+            self.game.window.blit(self.game.window, (0, 0))
             self.game.draw_text(
                 "Game Over",
-                80,
+                100,
                 constants.DISPLAY_WIDTH / 2,
                 (constants.DISPLAY_HEIGHT / 2) - 100,
-                self.game_over_img,
+                self.game.window,
                 constants.RED,
-                self.font_zelda,
+                self.font_game_over,
             )
             self.game.draw_text(
                 "press SPACE to retry",
                 20,
                 constants.DISPLAY_WIDTH / 2,
-                constants.DISPLAY_HEIGHT / 2 - 50,
-                self.game_over_img,
+                constants.DISPLAY_HEIGHT / 2 - 30,
+                self.game.window,
                 constants.RED,
-                self.font_zelda,
+                self.font_retry,
             )
             pygame.display.update()
 
