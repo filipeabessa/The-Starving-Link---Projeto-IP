@@ -114,6 +114,8 @@ class Game:
             self.food_images["chicken"],
         )
 
+        self.vidas_ganhas = 0
+
     # Método do loop do jogo. (Esse código antes ficava no projeto.py)
     def game_loop(self):
 
@@ -151,6 +153,7 @@ class Game:
                             )
                         )
                 self.check_colission()
+                self.check_score()
                 self.player.shoot()
                 self.player.check_hunger()
                 self.player.check_lives()
@@ -268,3 +271,9 @@ class Game:
                     self.player.draw_lives(
                         self.window, self.player.lives, self.player.lives_img
                     )
+
+    def check_score(self):
+        if self.score.score == (10*(1+self.vidas_ganhas)):
+            print("ganhou vida")
+            self.vidas_ganhas += 1
+            self.player.gain_life()

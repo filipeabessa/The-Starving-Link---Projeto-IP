@@ -56,6 +56,7 @@ class Player(pygame.sprite.Sprite):
         self.lives = 5
         self.lives_limit = 5
         self.lives_img = pygame.image.load("./Images/8bitheart.png")
+        self.lives_empty_img = pygame.image.load("./Images/8bitheartempty.png")
 
         # Se o player perder uma vida, vai ser mudado para True, para os enemies não conseguirem atacar por algum tempo
         self.invincible = False
@@ -155,10 +156,10 @@ class Player(pygame.sprite.Sprite):
 
         if self.damaged:
             try:
-                self.image.fill(
-                    (255, 255, 0, next(self.damage_alpha)),
-                    special_flags=pygame.BLEND_RGBA_MULT,
-                )
+                if self.speedy == 0 and self.speedx == 0:
+                    next(self.damage_alpha)
+                else:    
+                    self.image.fill((0, 0, 0, next(self.damage_alpha)), special_flags=pygame.BLEND_RGBA_MULT)
             except:
                 self.invincible = False
                 self.damaged = False
@@ -205,6 +206,12 @@ class Player(pygame.sprite.Sprite):
             img_rect.x = constants.LIVES_POS_X
             img_rect.y = constants.LIVES_POS_Y + 30 * i
             screen.blit(img, img_rect)
+
+        for i in range(self.lives_limit-lives):
+            img_rect = img.get_rect()
+            img_rect.x = constants.LIVES_POS_X
+            img_rect.y = constants.LIVES_POS_Y + 30 * (i+lives)
+            screen.blit(self.lives_empty_img, img_rect)
 
     # Remove a vida em 1 quando o método é chamado. Se a quantidade de vidas vai de 1 para 0, o player morre
     def lose_life(self):
