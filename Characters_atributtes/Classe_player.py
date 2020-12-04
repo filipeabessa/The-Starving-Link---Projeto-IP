@@ -1,8 +1,6 @@
 import pygame
 from Characters_atributtes import projectile
-from Characters_atributtes import spritesheet
 from math import sqrt
-from os import path
 from itertools import chain
 import constants
 
@@ -79,7 +77,14 @@ class Player(pygame.sprite.Sprite):
         # Som ao perder vida
         self.lose_life_sound = pygame.mixer.Sound("./Sounds/stab.wav")
 
+        # Inicialização de damage_alpha
+        self.damage_alpha = 0
+
     def hit(self):
+        """
+        A função hit é chamada quando o player é atingido. Ela executa
+        um efeito de som, diminui a quantidade de vidas pra zero e torna o player invisível
+        """
         self.lose_life_sound.play()
         self.lives = self.lives - 1
         self.invincible = True
@@ -100,8 +105,10 @@ class Player(pygame.sprite.Sprite):
             if self.player_rect.x > constants.SCENARIO_WALKING_LIMIT_LEFT:
                 if not self.player_rect.colliderect(self.scenario.statue_left):
                     self.speedx = -7
-                    self.walking = True  # Só vai ser true se o player estiver andando (em qualquer direção)
-                    self.n = 2  # O valor para achar o frame correto dessa imagem é 2
+                    self.walking = True
+                    # Só vai ser true se o player estiver andando (em qualquer direção)
+                    self.n = 2
+            # O valor para achar o frame correto dessa imagem é 2
             # Ele tem o mesmo significado nas outras condicionais
         if keystate[pygame.K_d]:
             if self.player_rect.x < constants.SCENARIO_WALKING_LIMIT_RIGHT:

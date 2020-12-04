@@ -4,7 +4,6 @@ import pygame
 import constants
 
 # Food dictionary with health points for the constructor
-# TODO: Edit food list with final values
 food_list = {
     "apple": {
         "points": 5,
@@ -53,7 +52,7 @@ class Food:
         else:
             self._y_pos = constants.SCENARIO_WALKING_LIMIT_TOP + 20
 
-        #Cria o rect da comida
+        # Cria o rect da comida
         self._rect = self.sprite.get_rect()
         self._rect.x = self._x_pos
         self._rect.y = self._y_pos

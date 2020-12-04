@@ -1,18 +1,16 @@
 import pygame
-from menu import *
+from Screen_related import menu
 from Characters_atributtes import hunger
 from Characters_atributtes import (
     Classe_player,
 )  # DONE       #Player, all_sprites, bullets
 from Characters_atributtes import spritesheet  # DONE
-from score import Score
-from food import Food
-from game_over import Game_over
-from Characters_atributtes import projectile
-from Characters_atributtes import enemy
-from items_count import Items_count
+from Objectives import score
+from Objectives import food
+from Screen_related import game_over
+from Objectives import items_count
 from os import path
-from scenario import Scenario
+from Screen_related import scenario
 from Characters_atributtes import enemy_spawner
 import constants
 
@@ -50,11 +48,11 @@ class Game:
 
         # Cria instâncias das classes
 
-        self.score = Score(self.window, self)
+        self.score = score.Score(self.window, self)
         self.hunger = hunger.Hunger(self.window)
-        self.menu = Menu(self)
-        self.game_over = Game_over(self)
-        self.scenario = Scenario()
+        self.menu = menu.Menu(self)
+        self.game_over = game_over.Game_over(self)
+        self.scenario = scenario.Scenario()
         self.spritesheet = spritesheet.Spritesheet("./Images/positions_link.gif")
         self.player = Classe_player.Player(
             self.hunger, self, self.game_over, self.scenario
@@ -92,21 +90,21 @@ class Game:
             ),
         }
 
-        self.apples_count = Items_count(
+        self.apples_count = items_count.Items_count(
             self.window,
             0,
             constants.APPLES_COUNT_POS_X,
             constants.APPLES_COUNT_POS_Y,
             self.food_images["apple"],
         )
-        self.breads_count = Items_count(
+        self.breads_count = items_count.Items_count(
             self.window,
             0,
             constants.BREADS_COUNT_POS_X,
             constants.BREADS_COUNT_POS_Y,
             self.food_images["bread"],
         )
-        self.chickens_count = Items_count(
+        self.chickens_count = items_count.Items_count(
             self.window,
             0,
             constants.CHICKENS_COUNT_POS_X,
@@ -127,7 +125,7 @@ class Game:
         if self.playing:
             music = pygame.mixer.music.load("./Sounds/dark_sarias_song.ogg")
             pygame.mixer.music.play(-1)
-            Food.start_spawn()  # Inicia o spawn de comidas
+            food.Food.start_spawn()  # Inicia o spawn de comidas
             first_frame = True
             while not self.player.dead:
                 # Controla o delta_time
@@ -144,9 +142,9 @@ class Game:
                         self.menu.run_display = False
 
                     # Spawna uma comida caso o evento de spawn seja chamado
-                    if event.type == Food.FOOD_SPAWN_EVENT:
+                    if event.type == food.Food.FOOD_SPAWN_EVENT:
                         self.food_list.append(
-                            Food.random_spawn(
+                            food.Food.random_spawn(
                                 [],
                                 constants.SCENARIO_WALKING_LIMIT_RIGHT,
                                 constants.SCENARIO_WALKING_LIMIT_DOWN,

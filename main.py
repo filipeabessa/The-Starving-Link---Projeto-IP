@@ -1,5 +1,4 @@
 from game import Game
-from game_over import Game_over
 import pygame
 
 pygame.init()
