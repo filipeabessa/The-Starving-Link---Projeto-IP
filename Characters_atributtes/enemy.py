@@ -68,12 +68,13 @@ class Enemy(Sprite):
             self.rect.y = self._previous_pos[1]
 
     def die(self, enemy_list, food_list):
+        """A Função é chamada quando o inimigo é atingido por uma flecha.
+        Quando ela é chamada, acontece um efeito sonoro"""
 
-        # Arrow hit sound
         self.hit_sound.set_volume(0.6)
         self.hit_sound.play()
-        """Desabilita a função update e têm 30% de chance de dropar um item, sendo
-        66% de chance de ser uma comida e 33% de ser um buff"""
+        # Desabilita a função update e têm 30% de chance de dropar um item, sendo
+        # 66% de chance de ser uma comida e 33% de ser um buff
         if self._is_dead:
             return  # Se o inimigo já está morto, retorne
 

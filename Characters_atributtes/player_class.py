@@ -7,9 +7,10 @@ import constants
 all_sprites = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 
-# Cria a classe do player
+
 class Player(pygame.sprite.Sprite):
-    # Construtor
+    """Cria a classe do player"""
+
     def __init__(self, hunger, game, game_over, scenario):
 
         self.game_over = game_over
@@ -58,7 +59,8 @@ class Player(pygame.sprite.Sprite):
         self.lives_img = pygame.image.load("./Images/8bitheart.png")
         self.lives_empty_img = pygame.image.load("./Images/8bitheartempty.png")
 
-        # Se o player perder uma vida, vai ser mudado para True, para os enemies não conseguirem atacar por algum tempo
+        # Se o player perder uma vida, vai ser mudado para True,
+        # para os enemies não conseguirem atacar por algum tempo
         self.invincible = False
         self.invincible_timer = pygame.time.get_ticks()
 
@@ -94,8 +96,8 @@ class Player(pygame.sprite.Sprite):
         self.damage_alpha = chain(constants.DAMAGE_ALPHA * 4)
 
     def update(self, food_list, game, delta_time=0):
-        # Para funcionar do jeito certo, o update precisa mudar o atributo de andar para false,
-        # de modo que seja possível chamar a função para mudar as imagens várias vezes
+        """Para funcionar do jeito certo, o update precisa mudar o atributo de andar para false,
+        de modo que seja possível chamar a função para mudar as imagens várias vezes"""
         self.walking = False
         # A velocidade sempre será 0 para mover apenas quando uma tecla for pressionada
         self.speedx = 0
@@ -187,9 +189,9 @@ class Player(pygame.sprite.Sprite):
                 self.invincible = False
                 self.damaged = False
 
-    # Define método para fazer uma lista de imagens a partir de uma imagem passada como atributo
-    # em self.game.spritesheet
     def make_image_list(self, number_positions, image_width, image_height):
+        """Define método para fazer uma lista de imagens a partir
+        de uma imagem passada como atributo em self.game.spritesheet"""
         image_list = []
         # Loop for que itera x vezes, onde x é o número de imagens que forem passadas
         for image_number in range(number_positions):
@@ -200,8 +202,8 @@ class Player(pygame.sprite.Sprite):
             image_list.append(position)
         return image_list
 
-    # Define o método para animar o player passando o n da posição como parâmetro
     def animate(self, n):
+        """Define o método para animar o player passando o n da posição como parâmetro"""
         # Armazena o número de ticks do clock desde a última vez que o método foi chamado
         now = pygame.time.get_ticks()
         # Só vai entrar no if se o player estiver andando
@@ -224,7 +226,7 @@ class Player(pygame.sprite.Sprite):
                 self.player_img = self.image.copy()
 
     def draw_lives(self, screen, lives, img):
-        # Desenha vidas na tela
+        """Desenha vidas na tela"""
         for i in range(lives):
             img_rect = img.get_rect()
             img_rect.x = constants.LIVES_POS_X
@@ -237,37 +239,33 @@ class Player(pygame.sprite.Sprite):
             img_rect.y = constants.LIVES_POS_Y + 30 * (i + lives)
             screen.blit(self.lives_empty_img, img_rect)
 
-    # Remove a vida em 1 quando o método é chamado.
-    # Se a quantidade de vidas vai de 1 para 0, o player morre
     def lose_life(self):
+        """Remove a vida em 1 quando o método é chamado.
+        Se a quantidade de vidas vai de 1 para 0, o player morre"""
         self.lose_life_sound.play()
         self.lives = self.lives - 1
         self.make_invicible()
 
-    # Uma vida é adicionada quando o método é chamado, se o player tem menos que o limite de vidas
     def gain_life(self):
+        """Uma vida é adicionada quando o método é chamado,
+        se o player tem menos que o limite de vidas"""
         if self.lives < self.lives_limit:
             self.gain_life_sound.play()
             self.lives = self.lives + 1
 
-    # Faz player ficar invencível
-    """ def make_invincible(self):
-
-        self.invincible = True
-        self.invincible_timer = pygame.time.get_ticks() """
-
-    # Se a fome chegar em 0, o player morre
     def check_hunger(self):
+        """Se a fome chegar em 0, o player morre"""
         if self.hunger.curr_hungry == 0:
             self.player_died()
 
-    # Se a quantidade de vidas chegar em 0, o player morre
     def check_lives(self):
+        """Se a quantidade de vidas chegar em 0, o player morre"""
         if self.lives == 0:
             self.player_died()
 
-    # Função faz o jogador morrer e muda valores dos booleanos para que a tela de game over apareça
     def player_died(self):
+        """Função faz o jogador morrer e muda valores dos booleanos
+        para que a tela de game over apareça"""
         pygame.mixer.music.stop()
         pygame.mixer.music.load("./Sounds/the_giants_theme.ogg")
         pygame.mixer.music.play(-1)
@@ -279,12 +277,12 @@ class Player(pygame.sprite.Sprite):
         self.game_over.run_display = True
         all_sprites.empty()
 
-    # Recebe o sprite e retorna uma tupla com as coordenadas do player
     def coordenadas(self):
+        """Recebe o sprite e retorna uma tupla com as coordenadas do player"""
         return (self.player_rect.x, self.player_rect.y)
 
-    # Define método para atirar flechas
     def shoot(self):
+        """Define método para atirar flechas"""
         if self.timer > 0:
             return
 

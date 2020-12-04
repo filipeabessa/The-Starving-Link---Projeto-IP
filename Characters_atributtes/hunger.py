@@ -26,6 +26,7 @@ class Hunger:
         return self.curr_hungry
 
     def feed(self, value: float):
+        """Função chamada quando o player colide com a comida"""
         self.eating_sound.set_volume(0.6)
         self.eating_sound.play()
         # Soma o valor atual da fome com o parâmetro, respeitando o valor máximo que

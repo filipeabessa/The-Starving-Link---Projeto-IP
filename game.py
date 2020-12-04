@@ -7,6 +7,9 @@ import constants
 
 
 class Game:
+    """Classe do jogo, onde serão definidos os métodos e onde
+    serão instanciados os objetos utilizados no loop, junto a seus métodos e atributos"""
+
     def __init__(self):
 
         # Atributo booleano que recebe a informação se o jogo está rodando
@@ -105,8 +108,8 @@ class Game:
 
         self.vidas_ganhas = 0
 
-    # Método do loop do jogo. (Esse código antes ficava no projeto.py)
     def game_loop(self):
+        """Método do loop do jogo, que será chamado na main para executar o jogo."""
         if self.menu.run_display:
             # Checa se o jogo foi fechado ou se o enter foi apertado
             self.check_events()
@@ -151,8 +154,8 @@ class Game:
                 self.display_game(delta_time)
                 self.enemy_spawners.update(delta_time, self.enemies, self.window)
 
-    # Checa se o jogo foi fechado ou se o enter foi apertado
     def check_events(self):
+        """Checa se o jogo foi fechado ou se o enter foi apertado"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -164,8 +167,8 @@ class Game:
                     self.start_key = True
                     self.run_game_display = True
 
-    # Escreve na tela
     def draw_text(self, text, size, pos_x, pos_y, display, text_color, font):
+        """Escreve um texto na tela"""
         font = pygame.font.Font(font, size)
         text_surface = font.render(text, True, text_color)
         text_rect = text_surface.get_rect()
@@ -173,23 +176,13 @@ class Game:
         display.blit(text_surface, text_rect)
 
     def display_game(self, delta_time):
+        """Renderiza tudo que é necessário para o jogo"""
         if self.run_game_display:
             # Cenário mostrado na tela
             self.window.blit(self.scenario.scenario_img, (0, 0))
             # Player mostrado na tela
             self.player.update(self.food_list, self, delta_time)
             # Score mostrado na tela
-
-            # self.draw_text(
-            #     "Score:",
-            #     20,
-            #     constants.SCORE_POS_X,
-            #     constants.SCORE_POS_Y,
-            #     self.window,
-            #     constants.RED,
-            #     self.font_name,
-            # )
-
             self.score.update()
             # Barra de fome mostrado na tela
             self.hunger.update(delta_time)
@@ -225,6 +218,8 @@ class Game:
                 self.window.blit(bullets_surface, (arrow.rect.x, arrow.rect.y))
 
     def retry(self):
+        """Reinicia o jogo, zerando todos os pontos acumulados, fazendo as flechas e
+        os inimigos sumirem do mapa e movendo o player para o centro"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game_over.run_display = False
@@ -253,6 +248,7 @@ class Game:
                     self.player.player_rect.bottom = constants.DISPLAY_HEIGHT / 2
 
     def check_colission(self):
+        """Checa colisão"""
         for enemy in self.enemies:
             if self.player.player_rect.colliderect(enemy):
                 if not self.player.invincible:

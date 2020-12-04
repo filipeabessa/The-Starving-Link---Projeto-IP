@@ -1,14 +1,16 @@
 import pygame
 
-# Cria a classe da imagem usada para a animação
+
 class Spritesheet(pygame.sprite.Sprite):
+    """Cria a classe da imagem usada para a animação"""
+
     def __init__(self, filename):
         # Carrega o arquivo cujo nome é passado quando um objeto for criado
         self.spritesheet = pygame.image.load(filename).convert()
 
-    # Define um método para cortar as imagens de cada frame
-    # a partir de uma imagem com todos os frames
     def get_image(self, pos_x, pos_y, width, height):
+        """Define um método para cortar as imagens de cada frame
+        a partir de uma imagem com todos os frames"""
         image = pygame.Surface(
             (width, height)
         )  # Cria a superfície na qual a imagem vai ser desenhada
