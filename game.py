@@ -71,6 +71,8 @@ class Game:
         )
 
         self.enemies = []  # Lista de inimigos na tela
+        self.enemies_group = pygame.sprite.Group()
+        self.set_enemies_group()
         self.food_list = []  # Lista de comidas na tela
 
         # Contadores de itens pegos
@@ -150,7 +152,7 @@ class Game:
                                 self.window,
                             )
                         )
-
+                self.check_colission()
                 self.player.shoot()
                 self.player.check_hunger()
                 self.player.check_lives()
@@ -252,3 +254,18 @@ class Game:
                     self.player.player_rect.bottom = constants.DISPLAY_HEIGHT / 2
 
                     # TODO fazer os inimigos sumirem da tela
+
+    def set_enemies_group(self):
+            for enemy in self.enemies:
+                self.enemies_group.add(enemy)
+
+    def check_colission(self):
+        for enemy in self.enemies:
+            if self.player.player_rect.colliderect(enemy):
+                if not self.player.invincible:
+                    self.player.hit()
+                    self.player.draw_lives(
+                        self.window,
+                        self.player.lives,
+                        self.player.lives_img
+                    )

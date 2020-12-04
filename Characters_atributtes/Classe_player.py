@@ -3,6 +3,7 @@ from Characters_atributtes import projectile
 from Characters_atributtes import spritesheet
 from math import sqrt
 from os import path
+from itertools import chain
 import constants
 
 all_sprites = pygame.sprite.Group()
@@ -34,6 +35,9 @@ class Player(pygame.sprite.Sprite):
 
         # Cria um Rect com as dimensões do bloco do Player
         self.image = self.list_images[0]
+        #
+        self.player_img = self.image
+
         self.player_rect = self.image.get_rect()
         self.player_rect.centerx = constants.DISPLAY_HEIGHT / 2
         self.player_rect.bottom = constants.DISPLAY_WIDTH / 2
@@ -61,6 +65,15 @@ class Player(pygame.sprite.Sprite):
         self.dead = False
 
         self.scenario = scenario
+
+        # Player atingido por inimigo
+        self.damaged = False
+
+    def hit(self):
+        self.lives = self.lives - 1
+        self.invincible = True
+        self.damaged = True
+        self.damage_alpha = chain(constants.DAMAGE_ALPHA * 4)
 
     def update(self, dt=0):
         # Para funcionar do jeito certo, o update precisa mudar o atributo de andar para false,
@@ -116,11 +129,19 @@ class Player(pygame.sprite.Sprite):
             self.timer = self.timer - dt
 
         # Se o player estiver invencível há um segundo, o player deixar de ser invencivel
-        if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
-            self.invincible = False
+        #if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
+        #    self.invincible = False
 
         # Blit do player
         self.game.window.blit(self.image, self.coordenadas())
+
+        self.animate(self.n)
+        if self.damaged:
+            try:
+                self.image.fill((255, 0, 0, next(self.damage_alpha)), special_flags=pygame.BLEND_RGBA_MULT)
+            except:
+                self.invincible = False
+                self.damaged = False
 
     # Define método para fazer uma lista de imagens a partir de uma imagem passada como atributo
     # em self.game.spritesheet
@@ -175,10 +196,10 @@ class Player(pygame.sprite.Sprite):
             self.lives = self.lives + 1
 
     # Faz player ficar invencível
-    def make_invincible(self):
+    """ def make_invincible(self):
 
         self.invincible = True
-        self.invincible_timer = pygame.time.get_ticks()
+        self.invincible_timer = pygame.time.get_ticks() """
 
     # Se a fome chegar em 0, o player morre
     def check_hunger(self):
