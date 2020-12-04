@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
         self.damaged = True
         self.damage_alpha = chain(constants.DAMAGE_ALPHA * 4)
 
-    def update(self, food_list, game,dt=0):
+    def update(self, food_list, game, dt=0):
         # Para funcionar do jeito certo, o update precisa mudar o atributo de andar para false,
         # de modo que seja possível chamar a função para mudar as imagens várias vezes
         self.walking = False
@@ -140,23 +140,25 @@ class Player(pygame.sprite.Sprite):
                 self.hunger.feed(food.points)
                 food_list.remove(food)
 
-
         # self.breads_caught = 0
         # self.apples_caught = 0
         # self.chickens_caught = 0
 
         # Se o player estiver invencível há um segundo, o player deixar de ser invencivel
-        #if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
+        # if self.invincible and pygame.time.get_ticks() - self.invincible_timer > 1000:
         #    self.invincible = False
 
         # Blit do player
         self.game.window.blit(self.image, self.coordenadas())
 
-        self.image = self.player_img.copy() 
-        
+        self.image = self.player_img.copy()
+
         if self.damaged:
             try:
-                self.image.fill((255, 255, 0, next(self.damage_alpha)), special_flags=pygame.BLEND_RGBA_MULT)
+                self.image.fill(
+                    (255, 255, 0, next(self.damage_alpha)),
+                    special_flags=pygame.BLEND_RGBA_MULT,
+                )
             except:
                 self.invincible = False
                 self.damaged = False
@@ -250,7 +252,7 @@ class Player(pygame.sprite.Sprite):
         # Armazena uma lista de booleanos com as teclas que estão pressionadas
         keystate = pygame.key.get_pressed()
         direction = [0, 0]  # "Tupla" com o vetor direção inicial
-        speed = 15  # Velocidade da flecha
+        speed = 10  # Velocidade da flecha
         imagem = ""
         pos_x = 0  # Posição no eixo x de onde a flecha vai sair
         pos_y = 0  # Posição no eixo y de onde a flecha vai sair
