@@ -35,4 +35,4 @@ This project was created for non-commercial learning purposes and the rights of 
 
 # Soundtracks
 
-All rights to the soundtracks are reserved to their authors, the band Kalouv for the Dark Saria's Song version and the Hyrule Orchestra for their version of the Song of Time soundtrack.
+All rights to the soundtracks are reserved to their authors, the band Kalouv for the [https://www.youtube.com/watch?v=n4nux0gZ9y0]: Dark Saria's Song version and the [https://www.youtube.com/watch?v=-Vqo0pjNVCwHyrule]: Orchestra for their version of the Song of Time soundtrack.
