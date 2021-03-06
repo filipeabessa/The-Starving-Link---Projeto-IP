@@ -40,13 +40,13 @@ All rights of the tracks are reserved to their authors, the band Kalouv for the 
 ## Game Images :camera:
 - Start screen
 
-![Start Screen](/images/starving_link_start.png "Start Screen")
+![Start Screen](/Images/starving_link_start.png "Start Screen")
 
 - Game screen
 
-![Game Screen](/images/starving_link_game.png "Game Screen")
+![Game Screen](/Images/starving_link_game.png "Game Screen")
 
 - Game over screen
   
-![Game Over Screen](/images/starving_link_gameover.png "Game Over Screen")
+![Game Over Screen](/Images/starving_link_gameover.png "Game Over Screen")
 
