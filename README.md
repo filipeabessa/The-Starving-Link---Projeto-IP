@@ -37,3 +37,16 @@ This project was created for non-commercial learning purposes and the rights of 
 
 All rights of the tracks are reserved to their authors, the band Kalouv for the [Dark Saria's Song](https://www.youtube.com/watch?v=n4nux0gZ9y0), the Hyrule Orchestra for their version of [Song of Time](https://www.youtube.com/watch?v=-Vqo0pjNVCwHyrule) and Koji Kondo, for the Giant's Theme.
 
+## Game Images :camera:
+- Start screen
+
+![Start Screen](/images/starving_link_start.png "Start Screen")
+
+- Game screen
+
+![Game Screen](/images/starving_link_game.png "Game Screen")
+
+- Game over screen
+  
+![Game Over Screen](/images/starving_link_gameover.png "Game Over Screen")
+
