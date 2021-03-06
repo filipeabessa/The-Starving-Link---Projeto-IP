@@ -33,6 +33,7 @@ keyboard arrows = shoot in the arrow direction
 
 This project was created for non-commercial learning purposes and the rights of The Legend of Zelda franchise as well as most of the sprites used in the game belong to Nintendo.
 
-# Soundtracks
+# Soundtrack
 
-All rights to the soundtracks are reserved to their authors, the band Kalouv for the [Dark Saria's Song](https://www.youtube.com/watch?v=n4nux0gZ9y0) and the Hyrule Orchestra for their version of [Song of Time](https://www.youtube.com/watch?v=-Vqo0pjNVCwHyrule).
+All rights of the tracks are reserved to their authors, the band Kalouv for the [Dark Saria's Song](https://www.youtube.com/watch?v=n4nux0gZ9y0), the Hyrule Orchestra for their version of [Song of Time](https://www.youtube.com/watch?v=-Vqo0pjNVCwHyrule) and Koji Kondo, for the Giant's Theme.
+
